@@ -9,7 +9,7 @@ This module can find, require and register any file type the npm ecosystem has a
 
 **Currently supported extensions:**
 
-`.co, .coco, .coffee, .iced, .ini, .js, .json, .litcoffee, .ls, .toml, .xml, .yaml, .yml`
+`.co, .coco, .coffee, .csv, .iced, .ini, .js, .json, .litcoffee, .ls, .toml, .xml, .yaml, .yml`
 
 **Note:** If you'd like to add a new extension, please make a PR for [interpret](https://github.com/tkellen/node-interpret).
 
