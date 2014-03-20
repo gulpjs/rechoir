@@ -1,2 +1,0 @@
-module.exports = ->
-  console.log('hi')

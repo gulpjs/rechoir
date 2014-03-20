@@ -1,6 +1,6 @@
 {
   "name": "rechoir",
-  "description": "Require any file as a javascript module.",
+  "description": "Require any supported file as a node module.",
   "version": "0.1.0",
   "homepage": "https://github.com/tkellen/node-rechoir",
   "author": {
@@ -22,26 +22,39 @@
   ],
   "main": "index.js",
   "engines": {
-    "node": ">= 0.8"
+    "node": ">= 0.10"
   },
   "scripts": {
     "test": "mocha -R spec test/index.js"
   },
+  "dependencies": {
+    "resolve": "^0.6.1",
+    "interpret": "^0.2.0"
+  },
   "devDependencies": {
-    "tap": "~0.4.8",
+    "mocha": "^1.17.1",
+    "chai": "^1.9.0",
+    "coco": "^0.9.1",
     "coffee-script": "^1.7.1",
-    "mocha": "~1.17.1",
-    "chai": "~1.9.0",
-    "typescript": "^0.9.7",
-    "livescript": "0.0.1"
+    "require-csv": "0.0.1",
+    "iced-coffee-script": "^1.7.1-b",
+    "require-ini": "0.0.1",
+    "toml-require": "^1.0.1",
+    "require-xml": "0.0.1",
+    "require-yaml": "0.0.1",
+    "LiveScript": "^1.2.0"
   },
   "keywords": [
-    "command line"
-  ],
-  "dependencies": {
-    "findup-sync": "~0.1.2",
-    "resolve": "^0.6.1",
-    "minimist": "~0.0.5",
-    "extend": "~1.2.1"
-  }
+    "require",
+    "coco",
+    "coffee-script",
+    "csv",
+    "iced-coffee-script",
+    "ini",
+    "livescript",
+    "toml",
+    "xml",
+    "yaml",
+    "yml"
+  ]
 }
