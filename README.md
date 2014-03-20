@@ -1,6 +1,9 @@
 # rechoir [![Build Status](https://secure.travis-ci.org/tkellen/node-rechoir.png)](http://travis-ci.org/tkellen/node-rechoir)
 > Require any supported file as a node module.
 
+[![NPM](https://nodei.co/npm/rechoir.png)](https://nodei.co/npm/rechoir/)
+
+
 ## What is it?
 This module can find, require and register any file type the npm ecosystem has a module loader for.
 
