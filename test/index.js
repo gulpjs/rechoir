@@ -21,12 +21,10 @@ describe('registerFor', function () {
     rechoir.registerFor('./test/fixtures/test.coffee');
     expect(require('./fixtures/test.coffee')).to.deep.equal(expected);
   });
-/*
   it('should know csv', function () {
     rechoir.registerFor('./test/fixtures/test.csv');
     expect(require('./fixtures/test.csv')).to.deep.equal([['r1c1','r1c2'],['r2c1','r2c2']]);
   });
-*/
   it('should know iced-coffee-script', function () {
     rechoir.registerFor('./test/fixtures/test.iced');
     expect(require('./fixtures/test.iced')).to.deep.equal(expected);

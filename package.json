@@ -1,7 +1,7 @@
 {
   "name": "rechoir",
   "description": "Require any supported file as a node module.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/tkellen/node-rechoir",
   "author": {
     "name": "Tyler Kellen",
