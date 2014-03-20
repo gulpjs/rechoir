@@ -1,7 +1,7 @@
 {
   "name": "rechoir",
   "description": "Require any supported file as a node module.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "homepage": "https://github.com/tkellen/node-rechoir",
   "author": {
     "name": "Tyler Kellen",
@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "resolve": "^0.6.1",
-    "interpret": "^0.2.0"
+    "interpret": "^0.3.0"
   },
   "devDependencies": {
     "mocha": "^1.17.1",
