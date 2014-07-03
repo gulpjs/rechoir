@@ -74,7 +74,7 @@ describe('registerFor', function () {
 
 describe('load', function () {
   it('should automatically register a loader and require', function () {
-    delete require.extensions['.coffee']
+    delete require.extensions['.coffee'];
     expect(rechoir.load('./test/fixtures/test.json')).to.deep.equal(expected);
   });
 });
