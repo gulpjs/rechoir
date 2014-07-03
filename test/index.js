@@ -46,6 +46,10 @@ describe('registerFor', function () {
     rechoir.registerFor('./test/fixtures/test.json');
     expect(require('./fixtures/test.json')).to.deep.equal(expected);
   });
+  it('should know jsx', function () {
+    rechoir.registerFor('./test/fixtures/test.jsx');
+    expect(require('./fixtures/test.jsx')).to.deep.equal(expected);
+  });
   it('should know livescript', function () {
     rechoir.registerFor('./test/fixtures/test.ls');
     expect(require('./fixtures/test.ls')).to.deep.equal(expected);
