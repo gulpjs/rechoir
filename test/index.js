@@ -81,3 +81,9 @@ describe('load', function () {
     expect(rechoir.load('./test/fixtures/test.json')).to.deep.equal(expected);
   });
 });
+
+describe('interpret', function () {
+  it('should expose the underlying interpret object', function () {
+    expect(rechoir.interpret).to.deep.equal(require('interpret'));
+  });
+});
