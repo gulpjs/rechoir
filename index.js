@@ -24,3 +24,5 @@ exports.load = function (filepath) {
   exports.registerFor(filepath);
   return require(filepath);
 };
+
+exports.interpret = interpret;
