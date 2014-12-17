@@ -37,6 +37,7 @@
     "coco": "^0.9.1",
     "coffee-script": "^1.7.1",
     "iced-coffee-script": "^1.7.1-b",
+    "json5": "^0.4.0",
     "mocha": "^1.17.1",
     "node-jsx": "^0.10.0",
     "require-csv": "0.0.1",
