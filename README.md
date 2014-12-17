@@ -11,7 +11,7 @@ This module can find, require and register any file type the npm ecosystem has a
 
 `.co, .coffee, .csv, .iced, .ini, .js, .json, .jsx, .litcoffee, .ls, .toml, .xml, .yaml, .yml`
 
-**Note:** If you'd like to add a new extension, please make a PR for [interpret](https://github.com/tkellen/node-interpret).
+**Note:** If you'd like to add a new extension, please make a PR for [interpret].
 
 ## API
 
@@ -35,9 +35,13 @@ require('file.coffee');
 ### load (filepath)
 Automatically call `requireFor`, then require the requested file and return the result.
 
+### interpret
+The underlying [interpret] module.
+
 #### Usage
 ```js
 var rechoir = require('rechoir');
 rechoir.load('file.coffee');
 ```
 
+[interpret]: https://github.com/tkellen/node-interpret
