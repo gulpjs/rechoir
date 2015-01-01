@@ -61,6 +61,18 @@ describe('registerFor', function () {
     rechoir.registerFor('./test/fixtures/test.litcoffee');
     expect(require('./fixtures/test.litcoffee')).to.deep.equal(expected);
   });
+  it('should know literate coffee-script (.md)', function () {
+    rechoir.registerFor('./test/fixtures/test.coffee.md');
+    expect(require('./fixtures/test.coffee.md')).to.deep.equal(expected);
+  });
+  it('should know literate iced-coffee-script', function () {
+    rechoir.registerFor('./test/fixtures/test.liticed');
+    expect(require('./fixtures/test.liticed')).to.deep.equal(expected);
+  });
+  it('should know literate iced-coffee-script (.md)', function () {
+    rechoir.registerFor('./test/fixtures/test.iced.md');
+    expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
+  });
   it('should know toml', function () {
     rechoir.registerFor('./test/fixtures/test.toml');
     expect(require('./fixtures/test.toml')).to.deep.equal(expected);

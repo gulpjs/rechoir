@@ -2,8 +2,14 @@ const path = require('path');
 const resolve = require('resolve');
 const interpret = require('interpret');
 
+const EXTRE = /^[.]?[^.]+([.].*)$/;
+
 exports.registerFor = function (filepath, cwd) {
-  var ext = path.extname(filepath);
+  var match = EXTRE.exec(filepath);
+  if (!match) {
+    return;
+  }
+  var ext = match[1];
   if (Object.keys(require.extensions).indexOf(ext) !== -1) {
     return;
   }
