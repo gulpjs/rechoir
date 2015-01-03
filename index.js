@@ -5,7 +5,7 @@ const interpret = require('interpret');
 const EXTRE = /^[.]?[^.]+([.].*)$/;
 
 exports.registerFor = function (filepath, cwd) {
-  var match = EXTRE.exec(filepath);
+  var match = EXTRE.exec(path.basename(filepath));
   if (!match) {
     return;
   }
