@@ -85,6 +85,13 @@ describe('registerFor', function () {
     rechoir.registerFor('./test/fixtures/test.yaml');
     expect(require('./fixtures/test.yaml')).to.deep.equal(expected);
   });
+  it('must not fail on folders with dots', function () {
+    delete require.extensions['.yml'];
+    delete require.extensions['.yaml'];
+    delete require.cache[require.resolve('require-yaml')];
+    rechoir.registerFor('./test/fixtures/folder.with.dots/test.yaml');
+    expect(require('./fixtures/folder.with.dots/test.yaml')).to.deep.equal(expected);
+  });
 });
 
 describe('load', function () {
