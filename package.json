@@ -25,11 +25,12 @@
     "node": ">= 0.10"
   },
   "scripts": {
-    "test": "mocha -R spec test/index.js"
+    "test": "mocha -R spec test/index.js test/**/index.js"
   },
   "dependencies": {
     "resolve": "^0.6.1",
-    "interpret": "^0.4.0"
+    "interpret": "^0.4.0",
+    "findup-sync": "^0.2.1"
   },
   "devDependencies": {
     "6to5": "^2.9.4",
