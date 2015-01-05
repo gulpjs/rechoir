@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const path = require('path');
 const rechoir = require('../');
 
 var expected = {
@@ -104,5 +105,18 @@ describe('load', function () {
 describe('interpret', function () {
   it('should expose the underlying interpret object', function () {
     expect(rechoir.interpret).to.deep.equal(require('interpret'));
+  });
+});
+
+describe('interpret#register functions', function () {
+  it('should be called with the package path of the compiler module', function () {
+    rechoir.interpret.register['require-yaml'] = function (module, packagePath) {
+      expect(packagePath).to.be.equal(path.dirname(require.resolve('require-yaml')));
+    };
+    delete require.extensions['.yml'];
+    delete require.extensions['.yaml'];
+    delete require.cache[require.resolve('require-yaml')];
+    rechoir.registerFor('./test/fixtures/test.yaml');
+    delete rechoir.interpret.register['require-yaml'];
   });
 });

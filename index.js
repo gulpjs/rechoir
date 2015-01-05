@@ -1,6 +1,7 @@
 const path = require('path');
 const resolve = require('resolve');
 const interpret = require('interpret');
+const findup = require('findup-sync');
 
 const EXTRE = /^[.]?[^.]+([.].*)$/;
 
@@ -18,10 +19,12 @@ exports.registerFor = function (filepath, cwd) {
   }
   var moduleName = interpret.extensions[ext];
   if (moduleName) {
-    var compiler = require(resolve.sync(moduleName, {basedir: cwd}));
+    var modulePath = resolve.sync(moduleName, {basedir: cwd});
+    var packagePath = path.dirname(findup('package.json', {cwd : path.dirname(modulePath)}));
+    var compiler = require(modulePath);
     var register = interpret.register[moduleName];
     if (register) {
-      register(compiler);
+      register(compiler, packagePath);
     }
   }
 }
