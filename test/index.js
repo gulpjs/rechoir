@@ -110,13 +110,13 @@ describe('interpret', function () {
 
 describe('interpret#register functions', function () {
   it('should be called with the package path of the compiler module', function () {
-    rechoir.interpret.register['require-yaml'] = function (module, packagePath) {
-      expect(packagePath).to.be.equal(path.dirname(require.resolve('require-yaml')));
+    rechoir.interpret.register['require-yaml'] = function (module, options) {
+      expect(options).to.deep.equal({ packagePath : path.dirname(require.resolve('require-yaml')) });
     };
     delete require.extensions['.yml'];
     delete require.extensions['.yaml'];
     delete require.cache[require.resolve('require-yaml')];
     rechoir.registerFor('./test/fixtures/test.yaml');
     delete rechoir.interpret.register['require-yaml'];
-  });
-});
+      });
+    });
