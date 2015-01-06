@@ -24,7 +24,7 @@ exports.registerFor = function (filepath, cwd) {
     var compiler = require(modulePath);
     var register = interpret.register[moduleName];
     if (register) {
-      register(compiler, packagePath);
+      register(compiler, { packagePath : packagePath });
     }
   }
 }
