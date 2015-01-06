@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "resolve": "^0.6.1",
-    "interpret": "^0.3.0"
+    "interpret": "^0.3.0",
+    "findup-sync": "^0.2.1"
   },
   "devDependencies": {
     "LiveScript": "^1.2.0",
