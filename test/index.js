@@ -106,3 +106,37 @@ describe('interpret', function () {
     expect(rechoir.interpret).to.deep.equal(require('interpret'));
   });
 });
+
+describe('rechoir', function () {
+  it('should raise if module is undefined', function () {
+    expect(function() {
+      require('rechoir')();
+    }).to.throw(Error);
+  });
+  it('should raise if module is null', function () {
+    expect(function() {
+      require('rechoir')(null);
+    }).to.throw(Error);
+  });
+  it('should raise if module is missing require function', function () {
+    expect(function() {
+      require('rechoir')({});
+    }).to.throw(Error);
+  });
+  it('should raise if module.require is not a function', function () {
+    expect(function() {
+      require('rechoir')({require : {}});
+    }).to.throw(Error);
+  });
+  it('should raise if module.filepath is missing', function () {
+    expect(function() {
+      require('rechoir')({require : function(){}});
+    }).to.throw(Error);
+  });
+  it('should raise if module.filepath is not a string', function () {
+    expect(function() {
+      require('rechoir')({require : function(){}, filepath: {}});
+    }).to.throw(Error);
+  });
+});
+

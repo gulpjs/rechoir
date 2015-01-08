@@ -4,9 +4,19 @@ const interpret = require('interpret');
 
 const EXTRE = /^[.]?[^.]+([.].*)$/;
 
-module.exports = function (mod) {
+module.exports = function (aModule) {
 
-    var path = mod.require('path');
+    if (typeof aModule === 'undefined' || aModule === null) {
+      throw new Error('aModule parameter missing or null.');
+    }
+
+    if (typeof aModule.require !== 'function') {
+      throw new Error('aModule.require missing or not a function');
+    }
+
+    if (typeof aModule.filename !== 'string') {
+      throw new Error('aModule.filename missing or not a string');
+    }
 
     var result = {
       registerFor : function (filepath, cwd) {
@@ -19,11 +29,11 @@ module.exports = function (mod) {
           return;
         }
         if (!cwd) {
-          cwd = path.resolve(path.dirname(mod.filename));
+          cwd = path.resolve(path.dirname(aModule.filename));
         }
         var moduleName = interpret.extensions[ext];
         if (moduleName) {
-          var compiler = mod.require(resolve.sync(moduleName, {basedir: cwd}));
+          var compiler = aModule.require(resolve.sync(moduleName, {basedir: cwd}));
           var register = interpret.register[moduleName];
           if (register) {
             register(compiler);
@@ -33,7 +43,7 @@ module.exports = function (mod) {
 
       load : function (filepath) {
         result.registerFor(filepath);
-        return mod.require(filepath);
+        return aModule.require(filepath);
       },
 
       interpret : interpret

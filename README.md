@@ -26,7 +26,7 @@ Look for a module loader associated with the provided file and attempt require i
 
 #### Usage
 ```js
-var rechoir = require('rechoir');
+var rechoir = require('rechoir')(module);
 rechoir.registerFor('path/to/file.coffee');
 // coffee-script is now loaded and registered with node
 require('file.coffee');
@@ -40,7 +40,7 @@ The underlying [interpret] module.
 
 #### Usage
 ```js
-var rechoir = require('rechoir');
+var rechoir = require('rechoir')(module);
 rechoir.load('file.coffee');
 ```
 
