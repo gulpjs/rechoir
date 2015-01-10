@@ -34,5 +34,6 @@ afterEach(function (done) {
   delete rechoir.interpret.extensions['.bar'];
   delete rechoir.interpret.register['coffee-script/register'];
   delete rechoir.interpret.jsVariants['.bar'];
+  delete rechoir.interpret.legacy['.bar'];
   done();
 });

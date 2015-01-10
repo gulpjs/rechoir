@@ -30,5 +30,6 @@ afterEach(function (done) {
   delete rechoir.interpret.extensions['.foo'];
   delete rechoir.interpret.register['coffee-script/register'];
   delete rechoir.interpret.jsVariants['.foo'];
+  delete rechoir.interpret.legacy['.foo'];
   done();
 });

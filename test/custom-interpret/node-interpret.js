@@ -13,6 +13,9 @@ module.exports = {
   },
   jsVariants : {
     '.foo' : 'coffee-script/register'
+  },
+  legacy : {
+    '.foo' : 'coffee-script'
   }
 }
 
