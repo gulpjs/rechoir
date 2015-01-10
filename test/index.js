@@ -94,13 +94,6 @@ describe('registerFor', function () {
   });
 });
 
-describe('load', function () {
-  it('should automatically register a loader and require', function () {
-    delete require.extensions['.coffee'];
-    expect(rechoir.load('./test/fixtures/test.json')).to.deep.equal(expected);
-  });
-});
-
 describe('interpret', function () {
   it('should expose the underlying interpret object', function () {
     expect(rechoir.interpret).to.deep.equal(require('interpret'));
