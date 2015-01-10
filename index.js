@@ -52,9 +52,4 @@ exports.registerFor = function (filepath, cwd) {
   }
 };
 
-exports.load = function (filepath) {
-  exports.registerFor(filepath);
-  return require(path.resolve(filepath));
-};
-
 exports.interpret = interpret;

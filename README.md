@@ -32,16 +32,7 @@ rechoir.registerFor('path/to/file.coffee');
 require('file.coffee');
 ```
 
-### load (filepath)
-Automatically call `requireFor`, then require the requested file and return the result.
-
 ### interpret
 The underlying [interpret] module.
-
-#### Usage
-```js
-var rechoir = require('rechoir');
-rechoir.load('file.coffee');
-```
 
 [interpret]: https://github.com/tkellen/node-interpret
