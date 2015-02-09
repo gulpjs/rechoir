@@ -45,7 +45,8 @@
     "require-ini": "0.0.1",
     "require-xml": "0.0.1",
     "require-yaml": "0.0.1",
-    "toml-require": "^1.0.1"
+    "toml-require": "^1.0.1",
+    "typescript-register": "^1.0.6"
   },
   "keywords": [
     "require",
