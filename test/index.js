@@ -81,6 +81,10 @@ describe('registerFor', function () {
     rechoir.registerFor('./test/fixtures/test.iced.md');
     expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
   });
+  it('should know ts', function () {
+    rechoir.registerFor('./test/fixtures/test.ts');
+    expect(require('./fixtures/test.ts')).to.deep.equal(expected);
+  });
   it('should know toml', function () {
     rechoir.registerFor('./test/fixtures/test.toml');
     expect(require('./fixtures/test.toml')).to.deep.equal(expected);
