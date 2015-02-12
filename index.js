@@ -1,8 +1,11 @@
+const fs = require('fs');
 const path = require('path');
 const resolve = require('resolve');
 const interpret = require('interpret');
+const findup = require('findup-sync');
 
 const EXTRE = /^[.]?[^.]+([.].*)$/;
+const interpretKeys = Object.keys(interpret);
 
 function req (moduleName, cwd) {
   return require(resolve.sync(moduleName, {basedir: cwd}));
@@ -22,6 +25,36 @@ function handleLegacy (moduleName, legacyModuleName, cwd) {
   }
 }
 
+function extend(target, source) {
+    for (var key in source) {
+        if (interpretKeys.indexOf(key) !== -1) {
+            target[key] = extend(target[key] || {}, source[key]);
+        }
+        else {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+
+function mergeCustomInterpret(target, cwd) {
+    var result = extend(target, interpret);
+    try {
+        var filepath = findup('node-interpret.js', {cwd : cwd, nocase : true});
+        if (filepath) {
+            var customInterpret = require(filepath);
+            result = extend(result, customInterpret);
+        }
+    }
+    catch (e) {
+        // ignore
+    }
+    return result;
+}
+
+// first try to merge from process.cwd()
+var mergedInterpret = mergeCustomInterpret({}, process.cwd());
+
 exports.registerFor = function (filepath, cwd) {
   var match = EXTRE.exec(path.basename(filepath));
   if (!match) {
@@ -31,25 +64,29 @@ exports.registerFor = function (filepath, cwd) {
   if (Object.keys(require.extensions).indexOf(ext) !== -1) {
     return;
   }
-  var moduleName = interpret.extensions[ext];
-  if (!moduleName) {
-    return;
-  }
   if (!cwd) {
     cwd = path.dirname(path.resolve(filepath));
   }
-  var legacyModuleName = interpret.legacy[ext];
-  var config = interpret.configurations[moduleName];
+  // now we try to merge from the cwd and give the user
+  // a chance to override on a per test case basis
+  mergeCustomInterpret(mergedInterpret, cwd);
+  var moduleName = mergedInterpret.extensions[ext];
+  if (!moduleName) {
+    return;
+  }
+  var legacyModuleName = mergedInterpret.legacy[ext];
+  var config = mergedInterpret.configurations[moduleName];
   var compiler;
   if (legacyModuleName) {
     compiler = handleLegacy(moduleName, legacyModuleName, cwd);
   } else {
     compiler = req(moduleName, cwd);
   }
-  var register = interpret.register[moduleName];
+  var register = mergedInterpret.register[moduleName];
   if (register) {
     register(compiler, config);
   }
 };
 
-exports.interpret = interpret;
+module.exports.interpret = mergedInterpret;
+

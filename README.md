@@ -36,3 +36,11 @@ require('file.coffee');
 The underlying [interpret] module.
 
 [interpret]: https://github.com/tkellen/node-interpret
+
+## Adding Support for new Javascript Dialects and other DSLs
+
+Say you are currently developing your own Javascript dialect or a DSL, or simply want to integrate a DSL or dialect that is currently not being supported by [interpret](/tkellen/node-interpret), and you want to add support for these languages to your favorite tools right now.
+
+`rechoir` provides you with a mechanism for just doing that. Simply place a file called `node-interpret.js` in for example your package folder.
+
+The contents of that file are similar to what [interpret](/tkellen/node-interpret) exports. See the available test cases for more information.
