@@ -11,13 +11,14 @@ function req (moduleName, cwd) {
 function handleLegacy (moduleName, legacyModuleName, cwd) {
   try {
     return req(moduleName, cwd);
-  } catch (err) {
+  } catch (ignored) {
     try {
       return req(legacyModuleName, cwd);
-    } catch (__) {
+    } catch (err) {
       // nice error messages
-      err.message = err.message.replace(moduleName, moduleName + '\' or \'' + legacyModuleName);
-      throw err;
+      var message = err.toString();
+      message.replace(legacyModuleName, moduleName + '\' or \'' + legacyModuleName);
+      throw new Error(message, err);
     }
   }
 }
