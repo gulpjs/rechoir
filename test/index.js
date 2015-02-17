@@ -12,6 +12,27 @@ var expected = {
 };
 
 describe('registerFor', function () {
+  var original;
+
+  beforeEach(function () {
+    // save the original require.extensions
+    var keys = Object.keys(require.extensions);
+    original = keys.reduce(function(result, key){
+      result[key] = require.extensions[key];
+      return result;
+    }, {});
+  });
+
+  afterEach(function () {
+    // restore the original require.extensions
+    require.extensions = original;
+    original = null;
+  });
+
+  it('should know babel.js', function () {
+    rechoir.registerFor('./test/fixtures/test.babel.js');
+    expect(require('./fixtures/test.babel.js')).to.deep.equal(expected);
+  });
   it('should know coco', function () {
     rechoir.registerFor('./test/fixtures/test.co');
     expect(require('./fixtures/test.co')).to.deep.equal(expected);
@@ -52,14 +73,6 @@ describe('registerFor', function () {
   it('should know jsx', function () {
     rechoir.registerFor('./test/fixtures/test.jsx');
     expect(require('./fixtures/test.jsx')).to.deep.equal(expected);
-  });
-  it('should know es6', function () {
-    rechoir.registerFor('./test/fixtures/test.es6');
-    expect(require('./fixtures/test.es6')).to.deep.equal(expected);
-  });
-  it('should also register on .es', function () {
-    rechoir.registerFor('./test/fixtures/test.es');
-    expect(require('./fixtures/test.es')).to.deep.equal(expected);
   });
   it('should know livescript', function () {
     rechoir.registerFor('./test/fixtures/test.ls');
