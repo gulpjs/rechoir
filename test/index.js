@@ -185,6 +185,7 @@ describe('rechoir', function () {
       expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
     });
     it('should know ts', function () {
+      this.timeout(5000);
       rechoir.prepare(extensions, './test/fixtures/test.ts');
       expect(require('./fixtures/test.ts')).to.deep.equal(expected);
     });
