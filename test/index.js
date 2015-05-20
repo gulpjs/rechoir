@@ -6,6 +6,10 @@ const extensions = require('interpret').extensions;
 
 const rechoir = require('../');
 
+const helpers = require('./helpers');
+const cleanup = helpers.cleanup;
+const skippable = helpers.skippable;
+
 var expected = {
   data: {
     trueKey: true,
@@ -16,17 +20,9 @@ var expected = {
   }
 };
 
+process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
+
 describe('rechoir', function () {
-  var original;
-  
-  before(function () {
-    // save the original require.extensions
-    var keys = Object.keys(require.extensions);
-    original = keys.reduce(function(result, key){
-      result[key] = require.extensions[key];
-      return result;
-    }, {});
-  });
 
   require('./lib/extension');
   require('./lib/normalize');
@@ -35,11 +31,7 @@ describe('rechoir', function () {
   describe('prepare', function () {
     var testFilePath = path.join(__dirname, 'fixtures', 'test.coffee');
 
-    beforeEach(function () {
-      // restore the original require.extensions
-      require.extensions = original;
-      original = null;
-    });
+    beforeEach(cleanup);
 
     it('should throw if extension is unknown', function () {
       expect(function () {
@@ -74,7 +66,8 @@ describe('rechoir', function () {
       const result = rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath);
       expect(function () {
@@ -86,13 +79,15 @@ describe('rechoir', function () {
       rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath);
       expect(rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath)).to.be.true;
     });
@@ -146,23 +141,24 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.ls');
       expect(require('./fixtures/test.ls')).to.deep.equal(expected);
     });
-    it('should know literate coffee-script', function () {
+    it('should know literate coffee-script', skippable('coffee-script', '1.5.0', function () {
       rechoir.prepare(extensions, './test/fixtures/test.litcoffee');
       expect(require('./fixtures/test.litcoffee')).to.deep.equal(expected);
-    });
-    it('should know literate coffee-script (.md)', function () {
+    }));
+    it('should know literate coffee-script (.md)', skippable('coffee-script', '1.6.3', function () {
       rechoir.prepare(extensions, './test/fixtures/test.coffee.md');
       expect(require('./fixtures/test.coffee.md')).to.deep.equal(expected);
-    });
-    it('should know literate iced-coffee-script', function () {
+    }));
+    it('should know literate iced-coffee-script', skippable('iced-coffee-script', '1.7.1', function () {
       rechoir.prepare(extensions, './test/fixtures/test.liticed');
       expect(require('./fixtures/test.liticed')).to.deep.equal(expected);
-    });
-    it('should know literate iced-coffee-script (.md)', function () {
+    }));
+    it('should know literate iced-coffee-script (.md)', skippable('iced-coffee-script', '1.7.1', function () {
       rechoir.prepare(extensions, './test/fixtures/test.iced.md');
       expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
-    });
+    }));
     it('should know ts', function () {
+      this.timeout(5000);
       rechoir.prepare(extensions, './test/fixtures/test.ts');
       expect(require('./fixtures/test.ts')).to.deep.equal(expected);
     });

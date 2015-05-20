@@ -43,9 +43,11 @@
     "node-jsx": "^0.13.3",
     "require-csv": "0.0.1",
     "require-ini": "0.0.1",
+    "require-uncached": "^1.0.2",
     "require-xml": "0.0.1",
     "require-yaml": "0.0.1",
     "rimraf": "^2.3.4",
+    "semver": "^4.3.4",
     "sinon": "^1.14.1",
     "toml-require": "^1.0.1",
     "typescript-register": "^1.1.0"
