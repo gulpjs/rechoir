@@ -17,6 +17,8 @@ var expected = {
   }
 };
 
+process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
+
 describe('rechoir', function () {
   var original;
   var originalCacheKeys;
