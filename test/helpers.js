@@ -15,13 +15,13 @@ const originalCacheKeys = Object.keys(require.cache);
 const originalModuleLoad = Module.prototype.load;
 
 function cleanupCache(key) {
-  if(originalCacheKeys.indexOf(key) === -1){
+  if (originalCacheKeys.indexOf(key) === -1) {
     delete require.cache[key];
   }
 }
 
 function cleanupExtensions(ext) {
-  if(originalExtensions.indexOf(ext) === -1){
+  if (originalExtensions.indexOf(ext) === -1) {
     delete Module._extensions[ext];
   } else {
     Module._extensions[ext] = original[ext];
