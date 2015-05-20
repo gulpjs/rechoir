@@ -8,4 +8,7 @@ env:
   - COFFEE=coffee-script@^1.7
 matrix:
   fast_finish: true
-before_script: npm install $COFFEE # install a specific version of coffee-script
+before_install:
+  - npm install -g npm # needs the newest version of npm
+before_script:
+  - npm install $COFFEE # install a specific version of coffee-script
