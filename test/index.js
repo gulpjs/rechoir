@@ -1,4 +1,5 @@
 const path = require('path');
+const Module = require('module');
 
 const expect = require('chai').expect;
 
@@ -18,14 +19,19 @@ var expected = {
 
 describe('rechoir', function () {
   var original;
-  
+  var originalCacheKeys;
+  var originalModuleLoad;
+
   before(function () {
-    // save the original require.extensions
-    var keys = Object.keys(require.extensions);
-    original = keys.reduce(function(result, key){
+    // save the original cache keys
+    originalCacheKeys = Object.keys(require.cache);
+    // save the original Module._extensions
+    original = Object.keys(Module._extensions).reduce(function(result, key){
       result[key] = require.extensions[key];
       return result;
     }, {});
+    // save the original Module.prototype.load because coffee-script overwrites it
+    originalModuleLoad = Module.prototype.load;
   });
 
   require('./lib/extension');
@@ -36,9 +42,23 @@ describe('rechoir', function () {
     var testFilePath = path.join(__dirname, 'fixtures', 'test.coffee');
 
     beforeEach(function () {
-      // restore the original require.extensions
-      require.extensions = original;
-      original = null;
+      // restore the require.cache to startup state
+      Object.keys(require.cache).forEach(function(key){
+        if(originalCacheKeys.indexOf(key) === -1){
+          delete require.cache[key];
+        }
+      });
+      // restore the original Module.prototype.load
+      Module.prototype.load = originalModuleLoad;
+      // restore the original Module._extensions
+      var extensions = Object.keys(original);
+      Object.keys(Module._extensions).forEach(function(ext){
+        if(extensions.indexOf(ext) === -1){
+          delete Module._extensions[ext];
+        } else {
+          Module._extensions[ext] = original[ext];
+        }
+      });
     });
 
     it('should throw if extension is unknown', function () {
