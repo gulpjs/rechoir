@@ -188,14 +188,14 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.coffee.md');
       expect(require('./fixtures/test.coffee.md')).to.deep.equal(expected);
     }));
-    it('should know literate iced-coffee-script', function () {
+    it('should know literate iced-coffee-script', skippable('iced-coffee-script', '1.7.1', function () {
       rechoir.prepare(extensions, './test/fixtures/test.liticed');
       expect(require('./fixtures/test.liticed')).to.deep.equal(expected);
-    });
-    it('should know literate iced-coffee-script (.md)', function () {
+    }));
+    it('should know literate iced-coffee-script (.md)', skippable('iced-coffee-script', '1.7.1', function () {
       rechoir.prepare(extensions, './test/fixtures/test.iced.md');
       expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
-    });
+    }));
     it('should know ts', function () {
       this.timeout(5000);
       rechoir.prepare(extensions, './test/fixtures/test.ts');
