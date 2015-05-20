@@ -1,14 +1,14 @@
 const path = require('path');
-const Module = require('module');
 
 const expect = require('chai').expect;
-
-const semver = require('semver');
-const requireUncached = require('require-uncached');
 
 const extensions = require('interpret').extensions;
 
 const rechoir = require('../');
+
+const helpers = require('./helpers');
+const cleanup = helpers.cleanup;
+const skippable = helpers.skippable;
 
 var expected = {
   data: {
@@ -22,28 +22,7 @@ var expected = {
 
 process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
 
-function skippable(module, minVersion, fn){
-  if (semver.gte(requireUncached(module).VERSION, minVersion)) {
-    return fn;
-  }
-}
-
 describe('rechoir', function () {
-  var original;
-  var originalCacheKeys;
-  var originalModuleLoad;
-
-  before(function () {
-    // save the original cache keys
-    originalCacheKeys = Object.keys(require.cache);
-    // save the original Module._extensions
-    original = Object.keys(Module._extensions).reduce(function(result, key){
-      result[key] = require.extensions[key];
-      return result;
-    }, {});
-    // save the original Module.prototype.load because coffee-script overwrites it
-    originalModuleLoad = Module.prototype.load;
-  });
 
   require('./lib/extension');
   require('./lib/normalize');
@@ -52,25 +31,7 @@ describe('rechoir', function () {
   describe('prepare', function () {
     var testFilePath = path.join(__dirname, 'fixtures', 'test.coffee');
 
-    beforeEach(function () {
-      // restore the require.cache to startup state
-      Object.keys(require.cache).forEach(function(key){
-        if(originalCacheKeys.indexOf(key) === -1){
-          delete require.cache[key];
-        }
-      });
-      // restore the original Module.prototype.load
-      Module.prototype.load = originalModuleLoad;
-      // restore the original Module._extensions
-      var extensions = Object.keys(original);
-      Object.keys(Module._extensions).forEach(function(ext){
-        if(extensions.indexOf(ext) === -1){
-          delete Module._extensions[ext];
-        } else {
-          Module._extensions[ext] = original[ext];
-        }
-      });
-    });
+    beforeEach(cleanup);
 
     it('should throw if extension is unknown', function () {
       expect(function () {
