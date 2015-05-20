@@ -3,6 +3,9 @@ const Module = require('module');
 
 const expect = require('chai').expect;
 
+const semver = require('semver');
+const requireUncached = require('require-uncached');
+
 const extensions = require('interpret').extensions;
 
 const rechoir = require('../');
@@ -18,6 +21,12 @@ var expected = {
 };
 
 process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
+
+function skippable(module, minVersion, fn){
+  if (semver.gte(requireUncached(module).VERSION, minVersion)) {
+    return fn;
+  }
+}
 
 describe('rechoir', function () {
   var original;
@@ -96,7 +105,8 @@ describe('rechoir', function () {
       const result = rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath);
       expect(function () {
@@ -108,13 +118,15 @@ describe('rechoir', function () {
       rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath);
       expect(rechoir.prepare({
         '.coffee': [
           'nothere',
-          'coffee-script/register'
+          'coffee-script/register',
+          'coffee-script'
         ]
       }, testFilePath)).to.be.true;
     });
@@ -168,14 +180,14 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.ls');
       expect(require('./fixtures/test.ls')).to.deep.equal(expected);
     });
-    it('should know literate coffee-script', function () {
+    it('should know literate coffee-script', skippable('coffee-script', '1.5.0', function () {
       rechoir.prepare(extensions, './test/fixtures/test.litcoffee');
       expect(require('./fixtures/test.litcoffee')).to.deep.equal(expected);
-    });
-    it('should know literate coffee-script (.md)', function () {
+    }));
+    it('should know literate coffee-script (.md)', skippable('coffee-script', '1.6.3', function () {
       rechoir.prepare(extensions, './test/fixtures/test.coffee.md');
       expect(require('./fixtures/test.coffee.md')).to.deep.equal(expected);
-    });
+    }));
     it('should know literate iced-coffee-script', function () {
       rechoir.prepare(extensions, './test/fixtures/test.liticed');
       expect(require('./fixtures/test.liticed')).to.deep.equal(expected);
