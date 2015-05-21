@@ -56,9 +56,11 @@ describe('rechoir', function () {
       } catch (e) {
         expect(e.failures).to.be.array;
         expect(e.failures[0].error).to.be.instanceof(Error);
-        expect(e.failures[0].module).to.equal('nothere');
+        expect(e.failures[0].moduleName).to.equal('nothere');
+        expect(e.failures[0].module).to.be.null;
         expect(e.failures[1].error).to.be.instanceof(Error);
-        expect(e.failures[1].module).to.equal('orhere');
+        expect(e.failures[1].moduleName).to.equal('orhere');
+        expect(e.failures[1].module).to.be.null;
       }
     });
 

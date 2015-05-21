@@ -27,8 +27,12 @@ exports.prepare = function (extensions, filepath, cwd) {
     option = config[i];
     attempt = register(cwd, option.module, option.register);
     error = (attempt instanceof Error) ? attempt : null;
+    if (error) {
+      attempt = null;
+    }
     attempts.push({
-      module: option.module,
+      moduleName: option.module,
+      module: attempt,
       error: error
     });
     if (!error) {
