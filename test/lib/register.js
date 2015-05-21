@@ -10,8 +10,8 @@ describe('register', function () {
   });
 
   it('should call a register function if provided, passing in the module', function () {
-    register(__dirname, 'chai', function (module) {
-      expect(module).to.equal(chai);
+    register(__dirname, 'chai', function (attempt) {
+      expect(attempt).to.equal(chai);
     });
   });
 
