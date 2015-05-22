@@ -4,7 +4,7 @@ const extension = require('./lib/extension');
 const normalize = require('./lib/normalize');
 const register = require('./lib/register');
 
-exports.prepare = function (extensions, filepath, cwd) {
+exports.prepare = function (extensions, filepath, cwd, nothrow) {
   var option, attempt;
   var attempts = [];
   var err;
@@ -45,7 +45,11 @@ exports.prepare = function (extensions, filepath, cwd) {
   if (onlyErrors) {
     err = new Error('Unable to use specified module loaders for "'+ext+'".');
     err.failures = attempts;
-    throw err;
+    if (nothrow) {
+      return err;
+    } else {
+      throw err;
+    }
   }
   return attempts;
 };
