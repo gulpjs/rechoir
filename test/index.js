@@ -24,10 +24,6 @@ process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
 
 describe('rechoir', function () {
 
-  require('./lib/extension');
-  require('./lib/normalize');
-  require('./lib/register');
-
   describe('prepare', function () {
     var testFilePath = path.join(__dirname, 'fixtures', 'test.coffee');
 
