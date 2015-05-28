@@ -1,10 +1,9 @@
-// Test ES6 arrow functions
-var fn = () => {
-  var trueKey = true;
-  var falseKey = false;
-  var subKey = { subProp: 1 };
-  // Test harmony object short notation
-  return { data: { trueKey, falseKey, subKey}};
+module.exports = {
+  data: {
+    trueKey: true,
+    falseKey: false,
+    subKey: {
+      subProp: 1
+    }
+  }
 };
-
-module.exports = fn();
