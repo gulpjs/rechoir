@@ -9,18 +9,28 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
   var attempts = [];
   var err;
   var onlyErrors = true;
-  var ext = extension(filepath);
-  if (Object.keys(require.extensions).indexOf(ext) !== -1) {
+  var exts = extension(filepath);
+
+  var config;
+  var usedExtension;
+  exts.some(function(ext) {
+    usedExtension = ext;
+    config = normalize(extensions[ext]);
+    return !!config;
+  });
+
+  if(Object.keys(require.extensions).indexOf(usedExtension) !== -1) {
     return true;
   }
-  var config = normalize(extensions[ext]);
+
   if (!config) {
     if (nothrow) {
       return;
     } else {
-      throw new Error('No module loader found for "'+ext+'".');
+      throw new Error('No module loader found for "'+usedExtension+'".');
     }
   }
+
   if (!cwd) {
     cwd = path.dirname(path.resolve(filepath));
   }
@@ -45,7 +55,7 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
     }
   }
   if (onlyErrors) {
-    err = new Error('Unable to use specified module loaders for "'+ext+'".');
+    err = new Error('Unable to use specified module loaders for "'+usedExtension+'".');
     err.failures = attempts;
     if (nothrow) {
       return err;
