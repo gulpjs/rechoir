@@ -110,6 +110,10 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.csv');
       expect(require('./fixtures/test.csv')).to.deep.equal([['r1c1','r1c2'],['r2c1','r2c2']]);
     });
+    it('should know earl-grey', function () {
+      rechoir.prepare(extensions, './test/fixtures/test.eg');
+      expect(require('./fixtures/test.eg')).to.deep.equal(expected);
+    });
     it('should know iced-coffee-script', function () {
       rechoir.prepare(extensions, './test/fixtures/test.iced');
       expect(require('./fixtures/test.iced')).to.deep.equal(expected);
