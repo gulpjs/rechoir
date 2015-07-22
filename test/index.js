@@ -39,6 +39,10 @@ describe('rechoir', function () {
       }).to.throw(/No module loader found for/);
     });
 
+    it('should return undefined if an unknown extension is specified when nothrow is enabled', function () {
+      expect(rechoir.prepare(extensions, './test/fixtures/.testrc', null, true)).to.be.undefined;
+    });
+
     it('should throw if a module loader cannot be found or loaded', function () {
       expect(function () {
         require(testFilePath);
