@@ -51,7 +51,8 @@
     "semver": "^4.3.4",
     "sinon": "^1.14.1",
     "toml-require": "^1.0.1",
-    "typescript-register": "^1.1.0"
+    "typescript": "microsoft/TypeScript#32bec3b3e7ba55600da7b3f065251b02388089dd",
+    "typescript-node": "0.0.7"
   },
   "keywords": [
     "require",
