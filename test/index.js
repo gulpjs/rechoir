@@ -20,6 +20,9 @@ var expected = {
   }
 };
 
+// Support `tsconfig.json` look up.
+process.chdir(path.join(__dirname, 'fixtures'));
+
 process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
 
 describe('rechoir', function () {
@@ -172,6 +175,11 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.ts');
       expect(require('./fixtures/test.ts')).to.deep.equal(expected);
     });
+    it('should know tsx', skippable('typescript-node', '0.0.1', function () {
+      this.timeout(5000);
+      rechoir.prepare(extensions, './test/fixtures/test.tsx');
+      expect(require('./fixtures/test.tsx')).to.deep.equal({ default: expected });
+    }));
     it('should know toml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.toml');
       expect(require('./fixtures/test.toml')).to.deep.equal(expected);

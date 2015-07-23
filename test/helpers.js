@@ -38,7 +38,15 @@ function cleanup() {
 }
 
 function skippable(module, minVersion, fn) {
-  if (semver.gte(requireUncached(module).VERSION, minVersion)) {
+  var VERSION;
+
+  try {
+    VERSION = requireUncached(module).VERSION
+  } catch (e) {
+    return;
+  }
+
+  if (semver.gte(VERSION, minVersion)) {
     cleanup();
     return fn;
   }
