@@ -8,7 +8,7 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
   var option, attempt;
   var attempts = [];
   var err;
-  var onlyErrors = false;
+  var onlyErrors = true;
   var ext = extension(filepath);
   if (Object.keys(require.extensions).indexOf(ext) !== -1) {
     return true;
@@ -42,8 +42,6 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
     if (!error) {
       onlyErrors = false;
       break;
-    } else {
-      onlyErrors = true;
     }
   }
   if (onlyErrors) {

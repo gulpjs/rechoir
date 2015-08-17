@@ -52,16 +52,17 @@ describe('rechoir', function () {
       }).to.throw;
     });
 
-    it('should include errors for each module loader that was attempted if they failed to load', function () {
-      try {
-        rechoir.prepare({
-          '.coffee': [
-            'nothere',
-            'orhere'
-          ]
-        }, testFilePath);
-      } catch (e) {
-        expect(e.failures).to.be.array;
+    describe('all module loaders that were attempted failed to load', function () {
+      var exts = {
+        '.coffee': [
+          'nothere',
+          'orhere'
+        ]
+      };
+
+      // Check the failure entries in the thrown or returned error object.
+      function check_failures (e) {
+        expect(e.failures).to.be.an('array');
         expect(e.failures[0].error).to.be.instanceof(Error);
         expect(e.failures[0].moduleName).to.equal('nothere');
         expect(e.failures[0].module).to.be.null;
@@ -69,6 +70,23 @@ describe('rechoir', function () {
         expect(e.failures[1].moduleName).to.equal('orhere');
         expect(e.failures[1].module).to.be.null;
       }
+
+      it('should throw error listing each module loader that was attempted when nothrow = false', function () {
+        var err;
+        try {
+          rechoir.prepare(exts, testFilePath);
+        } catch (e) {
+          err = e;
+          check_failures(e);
+        }
+        expect(err).to.be.instanceof(Error);
+      });
+
+      it('should return error listing each module loader that was attempted when nothrow = true', function () {
+        check_failures(
+          rechoir.prepare(exts, testFilePath, null, true)
+        );
+      });
     });
 
     it('should register a module loader for the specified extension', function () {
