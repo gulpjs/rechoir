@@ -19,6 +19,15 @@ var expected = {
     }
   }
 };
+var expectedXml = {
+  data: {
+    trueKey: 'true',
+    falseKey: 'false',
+    subKey: {
+      subProp: '1'
+    }
+  }
+};
 
 // Support `tsconfig.json` look up.
 process.chdir(path.join(__dirname, 'fixtures'));
@@ -204,7 +213,7 @@ describe('rechoir', function () {
     });
     it('should know xml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.xml');
-      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expected);
+      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expectedXml);
     });
     it('should know yaml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.yaml');
