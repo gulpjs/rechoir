@@ -40,10 +40,14 @@ function cleanup() {
 function skippable(module, minVersion, fn) {
   var VERSION;
 
-  try {
-    VERSION = requireUncached(module).VERSION
-  } catch (e) {
-    return;
+  if (module === 'node') {
+    VERSION = process.version.slice(1);
+  } else {
+    try {
+      VERSION = requireUncached(module).VERSION
+    } catch (e) {
+      return;
+    }
   }
 
   if (semver.gte(VERSION, minVersion)) {

@@ -211,10 +211,11 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/test.toml');
       expect(require('./fixtures/test.toml')).to.deep.equal(expected);
     });
-    it('should know xml', function () {
+    // Skip on node older than 0.12 because require-xml can't run on node 0.10
+    it('should know xml', skippable('node', '4.0.0', function () {
       rechoir.prepare(extensions, './test/fixtures/test.xml');
       expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expectedXml);
-    });
+    }));
     it('should know yaml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.yaml');
       expect(require('./fixtures/test.yaml')).to.deep.equal(expected);
