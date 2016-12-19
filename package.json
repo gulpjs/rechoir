@@ -20,7 +20,7 @@
     "node": ">= 0.10"
   },
   "scripts": {
-    "test": "mocha -R spec test/index.js"
+    "test": "mocha --timeout 10000 -R spec test/index.js"
   },
   "dependencies": {
     "resolve": "^1.1.6"
