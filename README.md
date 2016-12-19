@@ -1,4 +1,4 @@
-# rechoir [![Build Status](https://secure.travis-ci.org/tkellen/js-rechoir.png)](http://travis-ci.org/tkellen/js-rechoir)
+# rechoir [![Build Status](https://secure.travis-ci.org/js-cli/js-rechoir.png)](http://travis-ci.org/js-cli/js-rechoir)
 > Require any supported file as a node module.
 
 [![NPM](https://nodei.co/npm/rechoir.png)](https://nodei.co/npm/rechoir/)
