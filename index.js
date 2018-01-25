@@ -13,11 +13,13 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
 
   var config;
   var usedExtension;
-  exts.some(function(ext) {
-    usedExtension = ext;
-    config = normalize(extensions[ext]);
-    return !!config;
-  });
+  if (exts) {
+    exts.some(function(ext) {
+      usedExtension = ext;
+      config = normalize(extensions[ext]);
+      return !!config;
+    });
+  }
 
   if(Object.keys(require.extensions).indexOf(usedExtension) !== -1) {
     return true;
