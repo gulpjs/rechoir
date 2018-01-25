@@ -20,6 +20,16 @@ var expected = {
   }
 };
 
+var xmlExpected = {
+  data: {
+    trueKey: 'true',
+    falseKey: 'false',
+    subKey: {
+      subProp: '1'
+    }
+  }
+};
+
 // Support `tsconfig.json` look up.
 process.chdir(path.join(__dirname, 'fixtures'));
 
@@ -189,6 +199,9 @@ describe('rechoir', function () {
       expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
     }));
     it('should know ts', function () {
+      if (process.version.slice(0, 3) === 'v0.') {
+        this.skip();
+      }
       this.timeout(5000);
       rechoir.prepare(extensions, './test/fixtures/test.ts');
       expect(require('./fixtures/test.ts')).to.deep.equal(expected);
@@ -203,8 +216,11 @@ describe('rechoir', function () {
       expect(require('./fixtures/test.toml')).to.deep.equal(expected);
     });
     it('should know xml', function () {
+      if (process.version.slice(0, 3) === 'v0.') {
+        this.skip();
+      }
       rechoir.prepare(extensions, './test/fixtures/test.xml');
-      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expected);
+      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(xmlExpected);
     });
     it('should know yaml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.yaml');
