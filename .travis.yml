@@ -3,6 +3,9 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
+  - "4"
+  - "lts/*" # latest LTS
+  - "stable"
 env:
   global:
     - REMOVE_DEPS=""
