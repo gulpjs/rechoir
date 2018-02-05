@@ -225,6 +225,32 @@ describe('rechoir', function () {
       rechoir.prepare(extensions, './test/fixtures/folder.with.dots/test.yaml');
       expect(require('./fixtures/folder.with.dots/test.yaml')).to.deep.equal(expected);
     });
+
+    describe('argument: cwd', function() {
+      it('should use cwd to register loader', function() {
+        var exts = {
+          '.xml': 'xml-loader.js'
+        };
+        var cwd = path.resolve(__dirname, 'fixtures');
+        rechoir.prepare(exts, './test/fixtures/test.xml', cwd);
+        var exp = {
+          data: {
+            falseKey: {
+              _text: false,
+            },
+            subKey: {
+              _attributes: {
+                subProp: '1',
+              }
+            },
+            trueKey: {
+              _text: true,
+            }
+          }
+        };
+        expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(exp);
+      });
+    });
   });
 
 });

@@ -10,5 +10,9 @@ describe('extension', function () {
     expect(extension('relative/path/to/file.js')).to.equal('.js');
     expect(extension('relative/path/to/file.dot.js')).to.equal('.dot.js');
   });
+
+  it('should return undefined if no extension', function() {
+    expect(extension('file')).to.equal(undefined);
+  });
   
 });
