@@ -20,7 +20,7 @@
     "node": ">= 0.10"
   },
   "scripts": {
-    "test": "mocha -R spec test/index.js"
+    "test": "mocha -t 3000 -R spec test/index.js"
   },
   "dependencies": {
     "resolve": "^1.1.6"
@@ -30,6 +30,7 @@
     "chai": "^2.3.0",
     "coco": "^0.9.1",
     "coffee-script": "^1.9.2",
+    "copy-props": "^2.0.1",
     "earlgrey": "0.0.9",
     "iced-coffee-script": "^1.8.0-d",
     "interpret": "^0.6.1",
@@ -40,7 +41,6 @@
     "require-csv": "0.0.1",
     "require-ini": "0.0.1",
     "require-uncached": "^1.0.2",
-    "require-xml": "0.0.1",
     "require-yaml": "0.0.1",
     "rimraf": "^2.3.4",
     "semver": "^4.3.4",
@@ -48,6 +48,9 @@
     "toml-require": "^1.0.1",
     "typescript": "microsoft/TypeScript#32bec3b3e7ba55600da7b3f065251b02388089dd",
     "typescript-node": "0.0.7"
+  },
+  "optionalDependencies": {
+    "require-xml": "0.0.1"
   },
   "keywords": [
     "require",

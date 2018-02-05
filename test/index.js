@@ -1,4 +1,6 @@
 const path = require('path');
+const semver = require('semver');
+const copyProps = require('copy-props');
 
 const expect = require('chai').expect;
 
@@ -203,8 +205,16 @@ describe('rechoir', function () {
       expect(require('./fixtures/test.toml')).to.deep.equal(expected);
     });
     it('should know xml', function () {
+      // dependencies of require-xml are not supported node < 4.0.0
+      if (semver.lt(process.version, '4.0.0')) {
+        this.skip();
+        return;
+      }
       rechoir.prepare(extensions, './test/fixtures/test.xml');
-      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expected);
+      var exp = copyProps(expected, {}, function(src) {
+        return String(src.value);
+      });
+      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(exp);
     });
     it('should know yaml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.yaml');
