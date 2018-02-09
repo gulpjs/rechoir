@@ -227,11 +227,11 @@ describe('rechoir', function () {
     });
 
     describe('argument: cwd', function() {
-      it('should use cwd to register loader', function() {
+      it('should specify cwd which has node_modules directory installing module loaders', function() {
         var exts = {
           '.xml': 'xml-loader.js'
         };
-        var cwd = path.resolve(__dirname, 'fixtures');
+        var cwd = path.resolve(__dirname, 'fixtures/cwd');
         rechoir.prepare(exts, './test/fixtures/test.xml', cwd);
         var exp = {
           data: {

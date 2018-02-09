@@ -9,7 +9,7 @@ coverage
 
 # Dependency directories
 node_modules
-!test/fixtures/node_modules
+!test/fixtures/cwd/node_modules
 
 # Optional npm cache directory
 .npm
