@@ -29,6 +29,7 @@
     "cover": "nyc --reporter=lcov --reporter=text-summary npm test"
   },
   "dependencies": {
+    "default-val": "^0.1.5",
     "resolve": "^1.1.6"
   },
   "devDependencies": {

@@ -251,6 +251,12 @@ describe('rechoir', function () {
         expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(exp);
       });
     });
+
+    describe('argument: opts', function() {
+      require('./opts/cwd');
+      require('./opts/nothrow');
+      require('./opts/hooks');
+    });
   });
 
 });
