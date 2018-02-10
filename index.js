@@ -3,49 +3,79 @@ const path = require('path');
 const extension = require('./lib/extension');
 const normalize = require('./lib/normalize');
 const register = require('./lib/register');
+const defaultVal = require('default-val');
 
 exports.prepare = function (extensions, filepath, cwd, nothrow) {
-  var option, attempt;
-  var attempts = [];
-  var err;
-  var onlyErrors = true;
+  var beforeEachFn, afterEachFn;
+  switch (Object.prototype.toString.call(cwd)) {
+    case '[object Object]': {
+      beforeEachFn = defaultVal(cwd.beforeEach, noop);
+      afterEachFn = defaultVal(cwd.afterEach, noop);
+      nothrow = defaultVal(nothrow, cwd.nothrow, 'boolean');
+      cwd = cwd.cwd;
+      break;
+    }
+    default: {
+      beforeEachFn = noop;
+      afterEachFn = noop;
+      break;
+    }
+  }
+
   var ext = extension(filepath);
   if (Object.keys(require.extensions).indexOf(ext) !== -1) {
     return true;
   }
+
   var config = normalize(extensions[ext]);
   if (!config) {
     if (nothrow) {
       return;
     } else {
-      throw new Error('No module loader found for "'+ext+'".');
+      throw new Error('No module loader found for "' + ext + '".');
     }
   }
+
   if (!cwd) {
     cwd = path.dirname(path.resolve(filepath));
   }
+
   if (!Array.isArray(config)) {
     config = [config];
   }
+
+  var onlyErrors = true;
+  var attempts = [];
+  var error;
+
   for (var i in config) {
-    option = config[i];
-    attempt = register(cwd, option.module, option.register);
-    error = (attempt instanceof Error) ? attempt : null;
+    var option = config[i];
+
+    beforeEachFn(option);
+
+    var result = register(cwd, option.module, option.register);
+    error = (result instanceof Error) ? result : null;
     if (error) {
-      attempt = null;
+      result = null;
     }
-    attempts.push({
+    var attempt = {
       moduleName: option.module,
-      module: attempt,
+      module: result,
       error: error
-    });
+    };
+    attempts.push(attempt);
+
+    afterEachFn(error, attempt, option);
+
     if (!error) {
       onlyErrors = false;
       break;
     }
   }
+
   if (onlyErrors) {
-    err = new Error('Unable to use specified module loaders for "'+ext+'".');
+    var err = new Error(
+      'Unable to use specified module loaders for "' + ext + '".');
     err.failures = attempts;
     if (nothrow) {
       return err;
@@ -55,3 +85,5 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
   }
   return attempts;
 };
+
+function noop() {}

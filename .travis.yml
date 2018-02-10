@@ -3,6 +3,9 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
+  - "4"
+  - "lts/*" # latest LTS
+  - "stable"
 env:
   global:
     - REMOVE_DEPS=""
@@ -14,12 +17,10 @@ env:
     - "CUSTOM_DEPS=iced-coffee-script@1.6.3-j"
     - "CUSTOM_DEPS=iced-coffee-script@latest"
     - "CUSTOM_DEPS=LiveScript@1.3.1 REMOVE_DEPS=livescript"
-    - "CUSTOM_DEPS=typescript-require REMOVE_DEPS=typescript-register REMOVE_DEPS=typescript-node"
-    - "CUSTOM_DEPS=typescript-register REMOVE_DEPS=typescript-require REMOVE_DEPS=typescript-node"
+    - "CUSTOM_DEPS=typescript-require REMOVE_DEPS=\"typescript-register typescript-node\""
+    - "CUSTOM_DEPS=\"typescript-register typescript@1.4.1\" REMOVE_DEPS=\"typescript-require typescript-node typescript\""
 matrix:
   fast_finish: true
-before_install:
-  - "npm install -g npm" # needs the newest version of npm
 before_script:
   - "[ \"${REMOVE_DEPS}\" == \"\" ] || npm rm $REMOVE_DEPS"
   - "npm install $CUSTOM_DEPS" # install a specific version of dependencies
