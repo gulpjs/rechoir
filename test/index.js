@@ -1,4 +1,6 @@
 const path = require('path');
+const semver = require('semver');
+const copyProps = require('copy-props');
 
 const expect = require('chai').expect;
 
@@ -203,8 +205,16 @@ describe('rechoir', function () {
       expect(require('./fixtures/test.toml')).to.deep.equal(expected);
     });
     it('should know xml', function () {
+      // dependencies of require-xml are not supported node < 4.0.0
+      if (semver.lt(process.version, '4.0.0')) {
+        this.skip();
+        return;
+      }
       rechoir.prepare(extensions, './test/fixtures/test.xml');
-      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(expected);
+      var exp = copyProps(expected, {}, function(src) {
+        return String(src.value);
+      });
+      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(exp);
     });
     it('should know yaml', function () {
       rechoir.prepare(extensions, './test/fixtures/test.yaml');
@@ -214,6 +224,32 @@ describe('rechoir', function () {
       delete require.cache[require.resolve('require-yaml')];
       rechoir.prepare(extensions, './test/fixtures/folder.with.dots/test.yaml');
       expect(require('./fixtures/folder.with.dots/test.yaml')).to.deep.equal(expected);
+    });
+
+    describe('argument: cwd', function() {
+      it('should specify cwd which has node_modules directory installing module loaders', function() {
+        var exts = {
+          '.xml': 'xml-loader.js'
+        };
+        var cwd = path.resolve(__dirname, 'fixtures/cwd');
+        rechoir.prepare(exts, './test/fixtures/test.xml', cwd);
+        var exp = {
+          data: {
+            falseKey: {
+              _text: false,
+            },
+            subKey: {
+              _attributes: {
+                subProp: '1',
+              }
+            },
+            trueKey: {
+              _text: true,
+            }
+          }
+        };
+        expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(exp);
+      });
     });
   });
 

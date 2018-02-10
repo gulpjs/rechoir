@@ -1,0 +1,59 @@
+{
+  "disallowMixedSpacesAndTabs": true,
+  "disallowSpaceAfterObjectKeys": true,
+  "disallowSpaceBeforeBinaryOperators": [
+    ","
+  ],
+  "disallowSpacesInsideArrayBrackets": true,
+  "disallowSpacesInsideParentheses": true,
+  "disallowTrailingWhitespace": true,
+  "requireCommaBeforeLineBreak": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireSpaceAfterBinaryOperators": [
+    "=",
+    ",",
+    "+",
+    "-",
+    "/",
+    "*",
+    "==",
+    "===",
+    "!=",
+    "!==",
+    ":",
+    "&&",
+    "||"
+  ],
+  "requireSpaceAfterKeywords": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "switch",
+    "return",
+    "try",
+    "catch"
+  ],
+  "requireSpaceBeforeBinaryOperators": [
+    "=",
+    "+",
+    "-",
+    "/",
+    "*",
+    "==",
+    "===",
+    "!=",
+    "!==",
+    "&&",
+    "||"
+  ],
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpacesInFunctionExpression": {
+    "beforeOpeningCurlyBrace": true
+  },
+  "validateQuoteMarks": {
+    "escape": true,
+    "mark": "'"
+  }
+}
