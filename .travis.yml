@@ -3,6 +3,10 @@ language: node_js
 node_js:
   - "0.10"
   - "0.12"
+  - "4"
+  - "6"
+  - "8"
+  - "10"
 env:
   global:
     - REMOVE_DEPS=""
@@ -18,8 +22,6 @@ env:
     - "CUSTOM_DEPS=typescript-register REMOVE_DEPS=typescript-require REMOVE_DEPS=typescript-node"
 matrix:
   fast_finish: true
-before_install:
-  - "npm install -g npm" # needs the newest version of npm
 before_script:
   - "[ \"${REMOVE_DEPS}\" == \"\" ] || npm rm $REMOVE_DEPS"
   - "npm install $CUSTOM_DEPS" # install a specific version of dependencies
