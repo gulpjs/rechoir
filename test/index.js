@@ -1,70 +1,125 @@
 const path = require('path');
+const Module = require('module');
 
-const expect = require('chai').expect;
-
-const extensions = require('interpret').extensions;
+const chai = require('chai');
+const expect = chai.expect;
 
 const rechoir = require('../');
+const extension = require('../lib/extension');
+const normalize = require('../lib/normalize');
+const register = require('../lib/register');
 
-const helpers = require('./helpers');
-const cleanup = helpers.cleanup;
-const skippable = helpers.skippable;
+// save the original Module._extensions
+const originalExtensions = Object.keys(Module._extensions);
+const original = originalExtensions.reduce(function (result, key) {
+  result[key] = require.extensions[key];
+  return result;
+}, {});
+// save the original cache keys
+const originalCacheKeys = Object.keys(require.cache);
 
-var expected = {
-  data: {
-    trueKey: true,
-    falseKey: false,
-    subKey: {
-      subProp: 1
-    }
+function cleanupCache(key) {
+  if (originalCacheKeys.indexOf(key) === -1) {
+    delete require.cache[key];
   }
-};
+}
 
-var xmlExpected = {
-  data: {
-    trueKey: 'true',
-    falseKey: 'false',
-    subKey: {
-      subProp: '1'
-    }
+function cleanupExtensions(ext) {
+  if (originalExtensions.indexOf(ext) === -1) {
+    delete Module._extensions[ext];
+  } else {
+    Module._extensions[ext] = original[ext];
   }
-};
+}
 
-// Support `tsconfig.json` look up.
-process.chdir(path.join(__dirname, 'fixtures'));
-
-process.env.TYPESCRIPT_REGISTER_USE_CACHE = 'false';
+function cleanup() {
+  // restore the require.cache to startup state
+  Object.keys(require.cache).forEach(cleanupCache);
+  // restore the original Module._extensions
+  Object.keys(Module._extensions).forEach(cleanupExtensions);
+}
 
 describe('rechoir', function () {
 
-  require('./lib/extension');
-  require('./lib/normalize');
-  require('./lib/register');
+  describe('extension', function () {
+
+    it('should extract extension from filename/path from the first dot', function () {
+      expect(extension('file.js')).to.equal('.js');
+      expect(extension('file.dot.js')).to.equal('.dot.js');
+      expect(extension('relative/path/to/file.js')).to.equal('.js');
+      expect(extension('relative/path/to/file.dot.js')).to.equal('.dot.js');
+    });
+  });
+
+  describe('normalize', function () {
+
+    it('should convert a string input into array/object format', function () {
+      expect(normalize('foo')).to.deep.equal({module:'foo'});
+    });
+
+    it('should convert object input into array format', function () {
+      const input = {
+        module: 'foo'
+      };
+      expect(normalize(input)).to.equal(input);
+    });
+
+    it('should iterate an array, normalizing each item', function () {
+      const input = [
+        { module: 'foo' },
+        'bar'
+      ];
+      expect(normalize(input)).to.deep.equal([
+        { module: 'foo' },
+        { module: 'bar' }
+      ]);
+    });
+  });
+
+  describe('register', function () {
+
+    it('should return the specified module relative to the provided cwd', function () {
+      expect(register(__dirname, 'chai')).to.equal(chai);
+    });
+
+    it('should call a register function if provided, passing in the module', function () {
+      register(__dirname, 'chai', function (attempt) {
+        expect(attempt).to.equal(chai);
+      });
+    });
+
+    it('should return an error if the specified module cannot be registered', function () {
+      expect(register(__dirname, 'whatev')).to.be.an.instanceof(Error);
+    });
+  });
 
   describe('prepare', function () {
-    var testFilePath = path.join(__dirname, 'fixtures', 'test.coffee');
+    var testFilePath = path.join(__dirname, 'fixtures', 'test.stub');
 
     beforeEach(cleanup);
 
     it('should throw if extension is unknown', function () {
       expect(function () {
-        rechoir.prepare(extensions, './test/fixtures/test.whatever');
+        rechoir.prepare({}, './test/fixtures/test.whatever');
       }).to.throw(/No module loader found for/);
     });
 
     it('should return undefined if an unknown extension is specified when nothrow is enabled', function () {
-      expect(rechoir.prepare(extensions, './test/fixtures/.testrc', null, true)).to.be.undefined;
+      expect(rechoir.prepare({}, './test/fixtures/.testrc', null, true)).to.be.undefined;
     });
 
     it('should throw if a module loader cannot be found or loaded', function () {
       expect(function () {
+        rechoir.prepare({
+          '.stub': ['nothere']
+        }, testFilePath);
         require(testFilePath);
-      }).to.throw;
+      }).to.throw();
     });
 
     describe('all module loaders that were attempted failed to load', function () {
       var exts = {
-        '.coffee': [
+        '.stub': [
           'nothere',
           'orhere'
         ]
@@ -101,10 +156,9 @@ describe('rechoir', function () {
 
     it('should register a module loader for the specified extension', function () {
       const result = rechoir.prepare({
-        '.coffee': [
+        '.stub': [
           'nothere',
-          'coffee-script/register',
-          'coffee-script'
+          '../require-stub'
         ]
       }, testFilePath);
       expect(function () {
@@ -114,122 +168,30 @@ describe('rechoir', function () {
 
     it('should return true if the module loader for the specified extension is already available', function () {
       rechoir.prepare({
-        '.coffee': [
+        '.stub': [
           'nothere',
-          'coffee-script/register',
-          'coffee-script'
+          '../require-stub'
         ]
       }, testFilePath);
       expect(rechoir.prepare({
-        '.coffee': [
+        '.stub': [
           'nothere',
-          'coffee-script/register',
-          'coffee-script'
+          '../require-stub'
         ]
       }, testFilePath)).to.be.true;
     });
 
-    it('should know babel.js', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.babel.js');
-      expect(require('./fixtures/test.babel.js')).to.deep.equal(expected);
-    });
-    it('should know coco', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.co');
-      expect(require('./fixtures/test.co')).to.deep.equal(expected);
-    });
-    it('should know coffee-script', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.coffee');
-      expect(require('./fixtures/test.coffee')).to.deep.equal(expected);
-    });
-    it('should know csv', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.csv');
-      expect(require('./fixtures/test.csv')).to.deep.equal([['r1c1','r1c2'],['r2c1','r2c2']]);
-    });
-    it('should know earl-grey', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.eg');
-      expect(require('./fixtures/test.eg')).to.deep.equal(expected);
-    });
-    it('should know iced-coffee-script', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.iced');
-      expect(require('./fixtures/test.iced')).to.deep.equal(expected);
-    });
-    it('should know ini', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.ini');
-      expect(require('./fixtures/test.ini')).to.deep.equal({
+    it('must not fail on folders with dots', function () {
+      rechoir.prepare({ '.stub': '../../require-stub' }, './test/fixtures/folder.with.dots/test.stub');
+      expect(require('./fixtures/folder.with.dots/test.stub')).to.deep.equal({
         data: {
-          trueKey: "true",
-          falseKey: "false"
+          trueKey: true,
+          falseKey: false,
+          subKey: {
+            subProp: 1
+          },
         }
       });
-    });
-    it('should know .js', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.js');
-      expect(require('./fixtures/test.js')).to.deep.equal(expected);
-    });
-    it('should know .json', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.json');
-      expect(require('./fixtures/test.json')).to.deep.equal(expected);
-    });
-    it('should know .json5', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.json5');
-      expect(require('./fixtures/test.json5')).to.deep.equal(expected);
-    });
-    it('should know jsx', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.jsx');
-      expect(require('./fixtures/test.jsx')).to.deep.equal(expected);
-    });
-    it('should know livescript', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.ls');
-      expect(require('./fixtures/test.ls')).to.deep.equal(expected);
-    });
-    it('should know literate coffee-script', skippable('coffee-script', '1.5.0', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.litcoffee');
-      expect(require('./fixtures/test.litcoffee')).to.deep.equal(expected);
-    }));
-    it('should know literate coffee-script (.md)', skippable('coffee-script', '1.6.3', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.coffee.md');
-      expect(require('./fixtures/test.coffee.md')).to.deep.equal(expected);
-    }));
-    it('should know literate iced-coffee-script', skippable('iced-coffee-script', '1.7.1', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.liticed');
-      expect(require('./fixtures/test.liticed')).to.deep.equal(expected);
-    }));
-    it('should know literate iced-coffee-script (.md)', skippable('iced-coffee-script', '1.7.1', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.iced.md');
-      expect(require('./fixtures/test.iced.md')).to.deep.equal(expected);
-    }));
-    it('should know ts', function () {
-      if (process.version.slice(0, 3) === 'v0.') {
-        this.skip();
-      }
-      this.timeout(5000);
-      rechoir.prepare(extensions, './test/fixtures/test.ts');
-      expect(require('./fixtures/test.ts')).to.deep.equal(expected);
-    });
-    it('should know tsx', skippable('typescript-node', '0.0.1', function () {
-      this.timeout(5000);
-      rechoir.prepare(extensions, './test/fixtures/test.tsx');
-      expect(require('./fixtures/test.tsx')).to.deep.equal({ default: expected });
-    }));
-    it('should know toml', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.toml');
-      expect(require('./fixtures/test.toml')).to.deep.equal(expected);
-    });
-    it('should know xml', function () {
-      if (process.version.slice(0, 3) === 'v0.') {
-        this.skip();
-      }
-      rechoir.prepare(extensions, './test/fixtures/test.xml');
-      expect(JSON.parse(require('./fixtures/test.xml'))).to.deep.equal(xmlExpected);
-    });
-    it('should know yaml', function () {
-      rechoir.prepare(extensions, './test/fixtures/test.yaml');
-      expect(require('./fixtures/test.yaml')).to.deep.equal(expected);
-    });
-    it('must not fail on folders with dots', function () {
-      delete require.cache[require.resolve('require-yaml')];
-      rechoir.prepare(extensions, './test/fixtures/folder.with.dots/test.yaml');
-      expect(require('./fixtures/folder.with.dots/test.yaml')).to.deep.equal(expected);
     });
   });
 
