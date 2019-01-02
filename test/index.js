@@ -54,6 +54,14 @@ describe('rechoir', function () {
       expect(extension('relative/path.with.dot/to/file.dot.js')[0]).to.equal('.dot.js');
       expect(extension('relative/path.with.dot/to/file.dot.js')[1]).to.equal('.js');
     });
+
+    it('does not match any if the path ends in a dot', function () {
+      expect(extension('file.js.')).to.equal(undefined);
+    });
+
+    it('does not consider a leading dot to be an extension', function () {
+      expect(extension('.config')).to.equal(undefined);
+    });
   });
 
   describe('normalize', function () {
