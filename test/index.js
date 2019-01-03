@@ -59,6 +59,15 @@ describe('rechoir', function () {
       expect(extension('file.js.')).to.equal(undefined);
     });
 
+    it('treats additional dots as a separate extension', function () {
+      // Double
+      expect(extension('file.babel..js')).to.deep.equal(['.babel..js', '..js', '.js']);
+      expect(extension('file..babel.js')).to.deep.equal(['..babel.js', '.babel.js', '.js']);
+      // Triple
+      expect(extension('file.babel...js')).to.deep.equal(['.babel...js', '...js', '..js', '.js']);
+      expect(extension('file...babel.js')).to.deep.equal(['...babel.js', '..babel.js', '.babel.js', '.js']);
+    });
+
     it('does not consider a leading dot to be an extension', function () {
       expect(extension('.config')).to.equal(undefined);
     });
