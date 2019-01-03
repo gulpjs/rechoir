@@ -44,10 +44,32 @@ describe('rechoir', function () {
   describe('extension', function () {
 
     it('should extract extension from filename/path from the first dot', function () {
-      expect(extension('file.js')).to.equal('.js');
-      expect(extension('file.dot.js')).to.equal('.dot.js');
-      expect(extension('relative/path/to/file.js')).to.equal('.js');
-      expect(extension('relative/path/to/file.dot.js')).to.equal('.dot.js');
+      expect(extension('file.js')[0]).to.equal('.js');
+      expect(extension('file.tmp.dot.js')[0]).to.equal('.tmp.dot.js');
+      expect(extension('file.tmp.dot.js')[1]).to.equal('.dot.js');
+      expect(extension('file.tmp.dot.js')[2]).to.equal('.js');
+      expect(extension('relative/path/to/file.js')[0]).to.equal('.js');
+      expect(extension('relative/path/to/file.dot.js')[0]).to.equal('.dot.js');
+      expect(extension('relative/path/to/file.dot.js')[1]).to.equal('.js');
+      expect(extension('relative/path.with.dot/to/file.dot.js')[0]).to.equal('.dot.js');
+      expect(extension('relative/path.with.dot/to/file.dot.js')[1]).to.equal('.js');
+    });
+
+    it('does not match any if the path ends in a dot', function () {
+      expect(extension('file.js.')).to.equal(undefined);
+    });
+
+    it('treats additional dots as a separate extension', function () {
+      // Double
+      expect(extension('file.babel..js')).to.deep.equal(['.babel..js', '..js', '.js']);
+      expect(extension('file..babel.js')).to.deep.equal(['..babel.js', '.babel.js', '.js']);
+      // Triple
+      expect(extension('file.babel...js')).to.deep.equal(['.babel...js', '...js', '..js', '.js']);
+      expect(extension('file...babel.js')).to.deep.equal(['...babel.js', '..babel.js', '.babel.js', '.js']);
+    });
+
+    it('does not consider a leading dot to be an extension', function () {
+      expect(extension('.config')).to.equal(undefined);
     });
   });
 
