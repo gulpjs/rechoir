@@ -1,38 +1,46 @@
 {
   "name": "rechoir",
-  "description": "Require any supported file as a node module.",
   "version": "0.6.2",
-  "homepage": "https://github.com/tkellen/node-rechoir",
-  "author": {
-    "name": "Tyler Kellen",
-    "url": "http://goingslowly.com/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/tkellen/node-rechoir.git"
-  },
-  "bugs": {
-    "url": "https://github.com/tkellen/node-rechoir/issues"
-  },
+  "description": "Prepare a node environment to require files with different extensions.",
+  "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
+  "contributors": [
+    "Blaine Bublitz <blaine.bublitz@gmail.com>",
+    "Tyler Kellen <tyler@sleekcode.net> (http://goingslowly.com/)"
+  ],
+  "repository": "gulpjs/rechoir",
   "license": "MIT",
-  "main": "index.js",
   "engines": {
     "node": ">= 0.10"
   },
+  "main": "index.js",
+  "files": [
+    "LICENSE",
+    "index.js",
+    "lib/"
+  ],
   "scripts": {
-    "test": "mocha -R spec test/index.js"
+    "lint": "eslint .",
+    "pretest": "rm -rf tmp/ && npm run lint",
+    "test": "mocha --async-only",
+    "cover": "istanbul cover _mocha --report lcovonly",
+    "coveralls": "npm run cover && istanbul-coveralls"
   },
   "dependencies": {
     "resolve": "^1.9.0"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
-    "mocha": "^2.2.5"
+    "eslint": "^2.13.0",
+    "eslint-config-gulp": "^3.0.1",
+    "expect": "^1.20.2",
+    "istanbul": "^0.4.3",
+    "istanbul-coveralls": "^1.0.3",
+    "mocha": "^3.5.3"
   },
   "keywords": [
     "require",
     "loader",
     "extension",
-    "extensions"
+    "extensions",
+    "prepare"
   ]
 }
