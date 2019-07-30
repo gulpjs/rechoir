@@ -72,3 +72,11 @@ MIT
 
 [gitter-url]: https://gitter.im/gulpjs/gulp
 [gitter-image]: https://badges.gitter.im/gulpjs/gulp.svg
+
+---
+
+<div align="center">
+  <b><a href="https://tidelift.com/subscription/pkg/npm-rechoir?utm_source=npm-rechoir&utm_medium=referral&utm_campaign=readme">Get supported rechoir with the Tidelift Subscription</a></b>
+  <br>
+  <sub>Tidelift gives software development teams a single source for purchasing and maintaining their software, with professional grade assurances from the experts who know it best, while seamlessly integrating with existing tools.</sub>
+</div>
