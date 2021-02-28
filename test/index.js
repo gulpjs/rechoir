@@ -130,7 +130,7 @@ describe('rechoir', function() {
     });
 
     it('should return an error if the specified module cannot be registered', function(done) {
-      expect(register(__dirname, 'whatev')).toBeAn(Error);
+      expect(register(__dirname, 'whatev')).toBeInstanceOf(Error);
 
       done();
     });
@@ -176,11 +176,11 @@ describe('rechoir', function() {
 
       // Check the failure entries in the thrown or returned error object.
       function checkFailures(e) {
-        expect(e.failures).toBeAn('array');
-        expect(e.failures[0].error).toBeAn(Error);
+        expect(e.failures).toBeInstanceOf(Array);
+        expect(e.failures[0].error).toBeInstanceOf(Error);
         expect(e.failures[0].moduleName).toEqual('nothere');
         expect(e.failures[0].module).toEqual(null);
-        expect(e.failures[1].error).toBeAn(Error);
+        expect(e.failures[1].error).toBeInstanceOf(Error);
         expect(e.failures[1].moduleName).toEqual('orhere');
         expect(e.failures[1].module).toEqual(null);
       }
@@ -193,7 +193,7 @@ describe('rechoir', function() {
           err = e;
           checkFailures(e);
         }
-        expect(err).toBeAn(Error);
+        expect(err).toBeInstanceOf(Error);
 
         done();
       });
@@ -216,7 +216,7 @@ describe('rechoir', function() {
       }, testFilePath);
       expect(function() {
         require(testFilePath);
-      }).toNotThrow(Error);
+      }).not.toThrow(Error);
 
       done();
     });

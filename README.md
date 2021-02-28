@@ -6,7 +6,7 @@
 
 # rechoir
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Travis Build Status][travis-image]][travis-url] [![AppVeyor Build Status][appveyor-image]][appveyor-url] [![Coveralls Status][coveralls-image]][coveralls-url] [![Gitter chat][gitter-image]][gitter-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Travis Build Status][travis-image]][travis-url] [![AppVeyor Build Status][appveyor-image]][appveyor-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
 Prepare a node environment to require files with different extensions.
 
@@ -19,10 +19,10 @@ This module, in conjunction with [interpret]-like objects, can register any file
 
 ## rechoir for enterprise
 
-Available as part of the Tidelift Subscription
+Available as part of the Tidelift Subscription.
 
-The maintainers of rechoir and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.](https://tidelift.com/subscription/pkg/npm-rechoir?utm_source=npm-rechoir&utm_medium=referral&utm_campaign=enterprise&utm_term=repo)
-
+The maintainers of `rechoir` and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.][tidelift-url]
+  
 
 ## Usage
 
@@ -42,7 +42,7 @@ console.log(require('./test/fixtures/test.toml'));
 
 ### `prepare(config, filepath, [cwd], [noThrow])`
 
-Look for a module loader associated with the provided file and attempt require it.  If necessary, run any setup required to inject it into [require.extensions](http://nodejs.org/api/globals.html#globals_require_extensions).
+Look for a module loader associated with the provided file and attempt require it.  If necessary, run any setup required to inject it into [require.extensions].
 
 `config` An [interpret]-like configuration object.
 
@@ -62,22 +62,21 @@ If a loader is already registered, this will simply return `true`.
 
 MIT
 
-[interpret]: http://github.com/gulpjs/interpret
-[Liftoff]: http://github.com/gulpjs/liftoff
+[interpret]: https://github.com/gulpjs/interpret
+[require.extensions]: https://nodejs.org/api/modules.html#modules_require_extensions
+[Liftoff]: https://github.com/js-cli/js-liftoff
 
-[downloads-image]: http://img.shields.io/npm/dm/rechoir.svg
+[downloads-image]: https://img.shields.io/npm/dm/rechoir.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/rechoir
-[npm-image]: http://img.shields.io/npm/v/rechoir.svg
+[npm-image]: https://img.shields.io/npm/v/rechoir.svg?style=flat-square
 
 [travis-url]: https://travis-ci.org/gulpjs/rechoir
-[travis-image]: http://img.shields.io/travis/gulpjs/rechoir.svg?label=travis-ci
+[travis-image]: https://img.shields.io/travis/gulpjs/rechoir.svg?label=travis-ci
 
 [appveyor-url]: https://ci.appveyor.com/project/gulpjs/rechoir
 [appveyor-image]: https://img.shields.io/appveyor/ci/gulpjs/rechoir.svg?label=appveyor
 
 [coveralls-url]: https://coveralls.io/r/gulpjs/rechoir
-[coveralls-image]: http://img.shields.io/coveralls/gulpjs/rechoir/master.svg
+[coveralls-image]: https://img.shields.io/coveralls/gulpjs/rechoir/master.svg
 
-[gitter-url]: https://gitter.im/gulpjs/gulp
-[gitter-image]: https://badges.gitter.im/gulpjs/gulp.svg
-
+[tidelift-url]: https://tidelift.com/subscription/pkg/npm-rechoir?utm_source=npm-rechoir&utm_medium=referral&utm_campaign=enterprise&utm_term=repo
