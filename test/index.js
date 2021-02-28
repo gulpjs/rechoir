@@ -10,7 +10,7 @@ var register = require('../lib/register');
 
 // save the original Module._extensions
 var originalExtensions = Object.keys(Module._extensions);
-var original = originalExtensions.reduce(function(result, key) {
+var original = originalExtensions.reduce(function (result, key) {
   result[key] = require.extensions[key];
   return result;
 }, {});
@@ -40,11 +40,9 @@ function cleanup(done) {
   done();
 }
 
-describe('rechoir', function() {
-
-  describe('extension', function() {
-
-    it('should extract extension from filename/path from the first dot', function(done) {
+describe('rechoir', function () {
+  describe('extension', function () {
+    it('should extract extension from filename/path from the first dot', function (done) {
       expect(extension('file.js')[0]).toEqual('.js');
       expect(extension('file.tmp.dot.js')[0]).toEqual('.tmp.dot.js');
       expect(extension('file.tmp.dot.js')[1]).toEqual('.dot.js');
@@ -52,45 +50,66 @@ describe('rechoir', function() {
       expect(extension('relative/path/to/file.js')[0]).toEqual('.js');
       expect(extension('relative/path/to/file.dot.js')[0]).toEqual('.dot.js');
       expect(extension('relative/path/to/file.dot.js')[1]).toEqual('.js');
-      expect(extension('relative/path.with.dot/to/file.dot.js')[0]).toEqual('.dot.js');
-      expect(extension('relative/path.with.dot/to/file.dot.js')[1]).toEqual('.js');
+      expect(extension('relative/path.with.dot/to/file.dot.js')[0]).toEqual(
+        '.dot.js'
+      );
+      expect(extension('relative/path.with.dot/to/file.dot.js')[1]).toEqual(
+        '.js'
+      );
 
       done();
     });
 
-    it('does not match any if the path ends in a dot', function(done) {
+    it('does not match any if the path ends in a dot', function (done) {
       expect(extension('file.js.')).toEqual(undefined);
 
       done();
     });
 
-    it('treats additional dots as a separate extension', function(done) {
+    it('treats additional dots as a separate extension', function (done) {
       // Double
-      expect(extension('file.babel..js')).toEqual(['.babel..js', '..js', '.js']);
-      expect(extension('file..babel.js')).toEqual(['..babel.js', '.babel.js', '.js']);
+      expect(extension('file.babel..js')).toEqual([
+        '.babel..js',
+        '..js',
+        '.js',
+      ]);
+      expect(extension('file..babel.js')).toEqual([
+        '..babel.js',
+        '.babel.js',
+        '.js',
+      ]);
       // Triple
-      expect(extension('file.babel...js')).toEqual(['.babel...js', '...js', '..js', '.js']);
-      expect(extension('file...babel.js')).toEqual(['...babel.js', '..babel.js', '.babel.js', '.js']);
+      expect(extension('file.babel...js')).toEqual([
+        '.babel...js',
+        '...js',
+        '..js',
+        '.js',
+      ]);
+      expect(extension('file...babel.js')).toEqual([
+        '...babel.js',
+        '..babel.js',
+        '.babel.js',
+        '.js',
+      ]);
 
       done();
     });
 
-    it('does not consider a leading dot to be an extension', function(done) {
+    it('does not consider a leading dot to be an extension', function (done) {
       expect(extension('.config')).toEqual(undefined);
 
       done();
     });
   });
 
-  describe('normalize', function() {
-
-    it('should convert a string input into array/object format', function(done) {
+  describe('normalize', function () {
+    it('should convert a string input into array/object format', function (done) {
       expect(normalize('foo')).toEqual({ module: 'foo' });
 
       done();
     });
 
-    it('should convert object input into array format', function(done) {
+    it('should convert object input into array format', function (done) {
       var input = {
         module: 'foo',
       };
@@ -99,79 +118,74 @@ describe('rechoir', function() {
       done();
     });
 
-    it('should iterate an array, normalizing each item', function(done) {
-      var input = [
-        { module: 'foo' },
-        'bar',
-      ];
-      expect(normalize(input)).toEqual([
-        { module: 'foo' },
-        { module: 'bar' },
-      ]);
+    it('should iterate an array, normalizing each item', function (done) {
+      var input = [{ module: 'foo' }, 'bar'];
+      expect(normalize(input)).toEqual([{ module: 'foo' }, { module: 'bar' }]);
 
       done();
     });
   });
 
-  describe('register', function() {
-
-    it('should return the specified module relative to the provided cwd', function(done) {
+  describe('register', function () {
+    it('should return the specified module relative to the provided cwd', function (done) {
       expect(register(__dirname, 'expect')).toEqual(expect);
 
       done();
     });
 
-    it('should call a register function if provided, passing in the module', function(done) {
-      register(__dirname, 'expect', function(attempt) {
+    it('should call a register function if provided, passing in the module', function (done) {
+      register(__dirname, 'expect', function (attempt) {
         expect(attempt).toEqual(expect);
       });
 
       done();
     });
 
-    it('should return an error if the specified module cannot be registered', function(done) {
+    it('should return an error if the specified module cannot be registered', function (done) {
       expect(register(__dirname, 'whatev')).toBeInstanceOf(Error);
 
       done();
     });
   });
 
-  describe('prepare', function() {
+  describe('prepare', function () {
     var testFilePath = path.join(__dirname, 'fixtures', 'test.stub');
 
     beforeEach(cleanup);
 
-    it('should throw if extension is unknown', function(done) {
-      expect(function() {
+    it('should throw if extension is unknown', function (done) {
+      expect(function () {
         rechoir.prepare({}, './test/fixtures/test.whatever');
       }).toThrow(/No module loader found for/);
 
       done();
     });
 
-    it('should return undefined if an unknown extension is specified when nothrow is enabled', function(done) {
-      expect(rechoir.prepare({}, './test/fixtures/.testrc', null, true)).toEqual(undefined);
+    it('should return undefined if an unknown extension is specified when nothrow is enabled', function (done) {
+      expect(
+        rechoir.prepare({}, './test/fixtures/.testrc', null, true)
+      ).toEqual(undefined);
 
       done();
     });
 
-    it('should throw if a module loader cannot be found or loaded', function(done) {
-      expect(function() {
-        rechoir.prepare({
-          '.stub': ['nothere'],
-        }, testFilePath);
+    it('should throw if a module loader cannot be found or loaded', function (done) {
+      expect(function () {
+        rechoir.prepare(
+          {
+            '.stub': ['nothere'],
+          },
+          testFilePath
+        );
         require(testFilePath);
       }).toThrow();
 
       done();
     });
 
-    describe('all module loaders that were attempted failed to load', function() {
+    describe('all module loaders that were attempted failed to load', function () {
       var exts = {
-        '.stub': [
-          'nothere',
-          'orhere',
-        ],
+        '.stub': ['nothere', 'orhere'],
       };
 
       // Check the failure entries in the thrown or returned error object.
@@ -185,7 +199,7 @@ describe('rechoir', function() {
         expect(e.failures[1].module).toEqual(null);
       }
 
-      it('should throw error listing each module loader that was attempted when nothrow = false', function(done) {
+      it('should throw error listing each module loader that was attempted when nothrow = false', function (done) {
         var err;
         try {
           rechoir.prepare(exts, testFilePath);
@@ -198,48 +212,51 @@ describe('rechoir', function() {
         done();
       });
 
-      it('should return error listing each module loader that was attempted when nothrow = true', function(done) {
-        checkFailures(
-          rechoir.prepare(exts, testFilePath, null, true)
-        );
+      it('should return error listing each module loader that was attempted when nothrow = true', function (done) {
+        checkFailures(rechoir.prepare(exts, testFilePath, null, true));
 
         done();
       });
     });
 
-    it('should register a module loader for the specified extension', function(done) {
-      rechoir.prepare({
-        '.stub': [
-          'nothere',
-          '../require-stub',
-        ],
-      }, testFilePath);
-      expect(function() {
+    it('should register a module loader for the specified extension', function (done) {
+      rechoir.prepare(
+        {
+          '.stub': ['nothere', '../require-stub'],
+        },
+        testFilePath
+      );
+      expect(function () {
         require(testFilePath);
       }).not.toThrow(Error);
 
       done();
     });
 
-    it('should return true if the module loader for the specified extension is already available', function(done) {
-      rechoir.prepare({
-        '.stub': [
-          'nothere',
-          '../require-stub',
-        ],
-      }, testFilePath);
-      expect(rechoir.prepare({
-        '.stub': [
-          'nothere',
-          '../require-stub',
-        ],
-      }, testFilePath)).toEqual(true);
+    it('should return true if the module loader for the specified extension is already available', function (done) {
+      rechoir.prepare(
+        {
+          '.stub': ['nothere', '../require-stub'],
+        },
+        testFilePath
+      );
+      expect(
+        rechoir.prepare(
+          {
+            '.stub': ['nothere', '../require-stub'],
+          },
+          testFilePath
+        )
+      ).toEqual(true);
 
       done();
     });
 
-    it('must not fail on folders with dots', function(done) {
-      rechoir.prepare({ '.stub': '../../require-stub' }, './test/fixtures/folder.with.dots/test.stub');
+    it('must not fail on folders with dots', function (done) {
+      rechoir.prepare(
+        { '.stub': '../../require-stub' },
+        './test/fixtures/folder.with.dots/test.stub'
+      );
       expect(require('./fixtures/folder.with.dots/test.stub')).toEqual({
         data: {
           trueKey: true,
@@ -269,5 +286,4 @@ describe('rechoir', function() {
       done();
     });
   });
-
 });
