@@ -6,7 +6,7 @@
 
 # rechoir
 
-[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Travis Build Status][travis-image]][travis-url] [![AppVeyor Build Status][appveyor-image]][appveyor-url] [![Coveralls Status][coveralls-image]][coveralls-url]
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url] [![Build Status][ci-image]][ci-url] [![Coveralls Status][coveralls-image]][coveralls-url]
 
 Prepare a node environment to require files with different extensions.
 
@@ -67,10 +67,8 @@ MIT
 [downloads-image]: https://img.shields.io/npm/dm/rechoir.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/rechoir
 [npm-image]: https://img.shields.io/npm/v/rechoir.svg?style=flat-square
-[travis-url]: https://travis-ci.org/gulpjs/rechoir
-[travis-image]: https://img.shields.io/travis/gulpjs/rechoir.svg?label=travis-ci
-[appveyor-url]: https://ci.appveyor.com/project/gulpjs/rechoir
-[appveyor-image]: https://img.shields.io/appveyor/ci/gulpjs/rechoir.svg?label=appveyor
+[ci-url]: https://github.com/gulpjs/rechoir/actions?query=workflow:dev
+[ci-image]: https://img.shields.io/github/workflow/status/gulpjs/rechoir/dev?style=flat-square
 [coveralls-url]: https://coveralls.io/r/gulpjs/rechoir
 [coveralls-image]: https://img.shields.io/coveralls/gulpjs/rechoir/master.svg
 [tidelift-url]: https://tidelift.com/subscription/pkg/npm-rechoir?utm_source=npm-rechoir&utm_medium=referral&utm_campaign=enterprise&utm_term=repo

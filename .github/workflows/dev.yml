@@ -1,0 +1,78 @@
+name: dev
+on:
+  pull_request:
+  push:
+    branches:
+
+env:
+  CI: true
+
+jobs:
+  prettier:
+    name: Format code
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/master' &&
+      github.repository_owner == 'gulpjs'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Prettier
+        uses: gulpjs/prettier_action@v3.0
+        with:
+          commit_message: 'Build: Run prettier'
+          prettier_options: '--write .'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  test:
+    name: Tests for Node ${{ matrix.node }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Set Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+
+      - run: node --version
+      - run: npm --version
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run lint and test
+        run: npm test
+
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel: true
+        env:
+          COVERALLS_FLAG_NAME: ${{matrix.os}}-node-${{ matrix.node }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [10, 12, 14]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+  coveralls:
+    name: Finish up
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Coveralls Finished
+        uses: coverallsapp/github-action@v1.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          parallel-finished: true
+
