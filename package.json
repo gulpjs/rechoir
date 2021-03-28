@@ -21,8 +21,8 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "rm -rf tmp/ && npm run lint",
-    "test": "mocha --async-only",
-    "cover": "istanbul cover _mocha --report lcovonly",
+    "test": "mocha --async-only test test/lib",
+    "cover": "istanbul cover _mocha --report lcovonly test test/lib",
     "coveralls": "npm run cover && istanbul-coveralls"
   },
   "dependencies": {

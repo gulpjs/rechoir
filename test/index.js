@@ -252,6 +252,22 @@ describe('rechoir', function() {
 
       done();
     });
+
+    it('should register a module loader even if the extension is single character (issue #38)', function(done) {
+      var fpath = path.join(__dirname, 'fixtures', 'test.s');
+      rechoir.prepare({
+        '.s': [
+          'nothere',
+          '../require-stub',
+        ],
+      }, fpath);
+
+      expect(function() {
+        require(fpath);
+      }).toNotThrow(Error);
+
+      done();
+    });
   });
 
 });
