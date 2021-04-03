@@ -270,7 +270,7 @@ describe('rechoir', function () {
       done();
     });
 
-    it('should register a module loader even if the extension is single character (issue #38)', function(done) {
+    it('should register a module loader even if the extension is single character (issue #38)', function (done) {
       var fpath = path.join(__dirname, 'fixtures', 'test.s');
       rechoir.prepare({
         '.s': [
@@ -279,9 +279,24 @@ describe('rechoir', function () {
         ],
       }, fpath);
 
-      expect(function() {
+      expect(function () {
         require(fpath);
       }).toNotThrow(Error);
+
+      done();
+    });
+
+    it('should register a module loader for the specified extension with cwd', function (done) {
+      rechoir.prepare(
+        {
+          '.foo': ['nothere', '../require-stub'],
+        },
+        path.join('cwd', 'test.foo'),
+        path.join(__dirname, 'fixtures')
+      );
+      expect(function () {
+        require(testFilePath);
+      }).not.toThrow(Error);
 
       done();
     });
