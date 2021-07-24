@@ -1,6 +1,6 @@
 {
   "name": "rechoir",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Prepare a node environment to require files with different extensions.",
   "author": "Gulp Team <team@gulpjs.com> (http://gulpjs.com/)",
   "contributors": [
