@@ -12,7 +12,7 @@ Prepare a node environment to require files with different extensions.
 
 ## What is it?
 
-This module, in conjunction with [interpret]-like objects, can register any filetype the npm ecosystem has a module loader for. This library is a dependency of [Liftoff].
+This module, in conjunction with [interpret]-like objects, can register any filetype the npm ecosystem has a module loader for. This library is a dependency of [liftoff].
 
 **Note:** While `rechoir` will automatically load and register transpilers like `coffee-script`, you must provide a local installation. The transpilers are **not** bundled with this module.
 
@@ -55,15 +55,19 @@ If a loader is already registered, this will simply return `true`.
 MIT
 
 <!-- prettier-ignore-start -->
-[interpret]: https://github.com/gulpjs/interpret
-[require.extensions]: https://nodejs.org/api/modules.html#modules_require_extensions
-[liftoff]: https://github.com/js-cli/js-liftoff
 [downloads-image]: https://img.shields.io/npm/dm/rechoir.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/rechoir
 [npm-image]: https://img.shields.io/npm/v/rechoir.svg?style=flat-square
+
 [ci-url]: https://github.com/gulpjs/rechoir/actions?query=workflow:dev
 [ci-image]: https://img.shields.io/github/workflow/status/gulpjs/rechoir/dev?style=flat-square
+
 [coveralls-url]: https://coveralls.io/r/gulpjs/rechoir
 [coveralls-image]: https://img.shields.io/coveralls/gulpjs/rechoir/master.svg
-[tidelift-url]: https://tidelift.com/subscription/pkg/npm-rechoir?utm_source=npm-rechoir&utm_medium=referral&utm_campaign=enterprise&utm_term=repo
+<!-- prettier-ignore-end -->
+
+<!-- prettier-ignore-start -->
+[interpret]: https://github.com/gulpjs/interpret
+[require.extensions]: https://nodejs.org/api/modules.html#modules_require_extensions
+[liftoff]: https://github.com/js-cli/js-liftoff
 <!-- prettier-ignore-end -->
