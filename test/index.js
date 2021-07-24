@@ -281,7 +281,7 @@ describe('rechoir', function () {
 
       expect(function () {
         require(fpath);
-      }).toNotThrow(Error);
+      }).not.toThrow(Error);
 
       done();
     });
