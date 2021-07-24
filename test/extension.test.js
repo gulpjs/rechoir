@@ -4,7 +4,6 @@ var expect = require('expect');
 var extension = require('../lib/extension');
 
 describe('Take out possible extensions from a file path', function () {
-
   it('should return an extension: ".js" from "app.js"', function (done) {
     expect(extension('app.js')).toEqual(['.js']);
     expect(extension('a/b/c/app.js')).toEqual(['.js']);
@@ -18,8 +17,16 @@ describe('Take out possible extensions from a file path', function () {
   });
 
   it('should return extensions: ".aaa.bbb.ccc", ".aaa.bbb" and ".ccc" from "app.aaa.bbb.ccc"', function (done) {
-    expect(extension('app.aaa.bbb.ccc')).toEqual(['.aaa.bbb.ccc', '.bbb.ccc', '.ccc']);
-    expect(extension('a/b/c/app.aaa.bbb.ccc')).toEqual(['.aaa.bbb.ccc', '.bbb.ccc', '.ccc']);
+    expect(extension('app.aaa.bbb.ccc')).toEqual([
+      '.aaa.bbb.ccc',
+      '.bbb.ccc',
+      '.ccc',
+    ]);
+    expect(extension('a/b/c/app.aaa.bbb.ccc')).toEqual([
+      '.aaa.bbb.ccc',
+      '.bbb.ccc',
+      '.ccc',
+    ]);
     done();
   });
 
