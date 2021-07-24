@@ -16,12 +16,6 @@ This module, in conjunction with [interpret]-like objects, can register any file
 
 **Note:** While `rechoir` will automatically load and register transpilers like `coffee-script`, you must provide a local installation. The transpilers are **not** bundled with this module.
 
-## rechoir for enterprise
-
-Available as part of the Tidelift Subscription.
-
-The maintainers of `rechoir` and thousands of other packages are working with Tidelift to deliver commercial support and maintenance for the open source dependencies you use to build your applications. Save time, reduce risk, and improve code health, while paying the maintainers of the exact dependencies you use. [Learn more.][tidelift-url]
-
 ## Usage
 
 ```js
