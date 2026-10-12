@@ -1,1 +1,1 @@
-require.extensions['.stub'] = require.extensions['.js'];
+require.extensions[".stub"] = require.extensions[".js"];
