@@ -1,8 +1,8 @@
-var path = require('path');
+var path = require("path");
 
-var extension = require('./lib/extension');
-var normalize = require('./lib/normalize');
-var register = require('./lib/register');
+var extension = require("./lib/extension");
+var normalize = require("./lib/normalize");
+var register = require("./lib/register");
 
 exports.prepare = function (extensions, filepath, cwd, nothrow) {
   var config, usedExtension, err, option, attempt, error;
@@ -56,7 +56,7 @@ exports.prepare = function (extensions, filepath, cwd, nothrow) {
   }
   if (onlyErrors) {
     err = new Error(
-      'Unable to use specified module loaders for "' + usedExtension + '".'
+      'Unable to use specified module loaders for "' + usedExtension + '".',
     );
     err.failures = attempts;
     if (nothrow) {
