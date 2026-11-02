@@ -164,13 +164,13 @@ describe("rechoir", function () {
 
     it("should throw if a module loader cannot be found or loaded", function () {
       assert.throws(() => {
-        (rechoir.prepare(
+        rechoir.prepare(
           {
             ".stub": ["nothere"],
           },
           testFilePath,
-        ),
-          require(testFilePath));
+        );
+        require(testFilePath);
       });
     });
 
