@@ -214,7 +214,6 @@ describe("rechoir", function () {
         testFilePath,
       );
       assert.doesNotThrow(() => require(testFilePath));
-
     });
 
     it("should return true if the module loader for the specified extension is already available", function () {
