@@ -207,13 +207,13 @@ describe("rechoir", function () {
     });
 
     it("should register a module loader for the specified extension", function () {
+      rechoir.prepare(
+        {
+          ".stub": ["nothere", "../require-stub"],
+        },
+        testFilePath,
+      );
       assert.doesNotThrow(() => {
-        rechoir.prepare(
-          {
-            ".stub": ["nothere", "../require-stub"],
-          },
-          testFilePath,
-        );
 
         require(testFilePath);
       });
